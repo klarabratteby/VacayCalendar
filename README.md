@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# VacayCalendar
 
-## Getting Started
+## Project Idea
 
-First, run the development server:
+VacayCalendar is a collaborative planning application inspired by the convenience of Google Calendar but tailored for vacation plans. It allows users to create and manage their vacation itineraries, collaborate with friends, and organize events. With real-time updates and notifications, users can stay connected and informed about their own and friends’ vacation plans.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technologies
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application is based on:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Language: TypeScript
+- Frontend framework: Next.js with React
+- Backend: Next.js
+- Database and authentication: Firebase
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Functionalities
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- User Authentication: Users can register and log in to an account.
+- Calendar: Users can create calendars for personal use and public calendars that are visible to added friends.
+- Event Management: Users can add, edit, and delete events on their calendars. There is also a specialized button for adding vacation dates.
+- Notifications: Users can receive notifications for events and changes made on their calendar.
