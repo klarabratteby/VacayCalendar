@@ -17,5 +17,5 @@ The application is based on:
 
 - User Authentication: Users can register and log in to an account.
 - Calendar: Users can create calendars for personal use and public calendars that are visible to added friends.
-- Event Management: Users can add, edit, and delete events on their calendars. There is also a specialized button for adding vacation dates.
+- Event Management: Users can add, edit, and delete events on their calendars. There is also a specialized function for adding vacation dates.
 - Notifications: Users can receive notifications for events and changes made on their calendar.
