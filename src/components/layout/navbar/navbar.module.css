@@ -2,13 +2,19 @@
   display: flex;
   flex-direction:column;
   width: 100%;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
 .navbarContent {
   display:flex;
   width:100%;
   flex-direction:row;
-  background-color: blue;
-  padding: 1.7rem;
+  padding: 0.9rem 2.0rem 0.9rem 2.0rem;
+}
+
+.iconButton {
+  background-color:transparent;
+  border: none;
+  color:rgb(204, 192, 239);
 }
 
