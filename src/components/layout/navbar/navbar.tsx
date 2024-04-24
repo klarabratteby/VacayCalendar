@@ -1,14 +1,25 @@
+
 import React, {} from "react"
 import styles from "./navbar.module.css"
-import { Home } from "react-feather";
+import { Home, User } from "react-feather";
+import Link from "next/link"
 
 export default function Navbar() {
+  
+
   return(
     <nav className={styles.navbarContainer}>
       <div className={styles.navbarContent}>
+        <Link href="/">
         <button className={styles.iconButton}>
-        <Home />
+          <Home />
         </button>
+        </Link>
+        <Link href="/calendar">
+        <button className={styles.iconButton}>
+          <User />
+        </button>
+        </Link>
       </div>
     </nav>
   );
