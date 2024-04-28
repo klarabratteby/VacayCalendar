@@ -1,8 +1,18 @@
 .pageContent {
-  display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  gap: 1rem;
 }
+
+.pageContentWrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendarDashboard {
+  flex:1;
+
+  background-color: pink;
+}
+
