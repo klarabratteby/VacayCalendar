@@ -1,5 +1,7 @@
-.calendar {
-
+.calendarContainer {
+  width: 85%;
+  margin: auto;
+  padding-top: 20%;
 }
 
 .datepickerContainer {
@@ -7,10 +9,27 @@
 }
 
 .weekdayContainer {
+  display: flex;
+  margin: auto;
+  justify-content: space-around;
+  background: white;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  padding-top: 10%;
 
 }
 
 .weekDay {
+  color:lightgray
 
 }
+
+.calendar {
+
+}
+
+.week {
+  
+}
+
+
 
