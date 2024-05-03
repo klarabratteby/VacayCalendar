@@ -1,41 +1,119 @@
-import React from 'react'
-import {Weekday,Date} from '../../../../types'
+"use client"
+import React, { useState } from "react";
 import styles from './calendar.module.css'
-import {Weekdays} from '../../../configs/weekdays'
-import {monthDates} from '../../../configs/monthdays';
+import {
+  format,
+  startOfWeek,
+  addDays,
+  startOfMonth,
+  endOfMonth,
+  endOfWeek,
+  isSameMonth,
+  isSameDay,
+  subMonths,
+  addMonths
+} from "date-fns";
 
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
 export default function Calendar() {
-  const generateDates = (date: number) => {
-    for (let i=0; i<7;i++){
-      //Fix component later
-      return <button className="date" value={date}><p>{date}</p></button>
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [activeDate, setActiveDate] = useState<Date>(new Date());
+
+  const getHeader = () => {
+    return (
+      <div className={styles.datepickerContainer}>
+        <div
+          className={styles.todayButton}
+          onClick={() => {
+            setSelectedDate(new Date());
+            setActiveDate(new Date());
+          }}
+        >
+          Today
+        </div>
+        <AiOutlineLeft
+          onClick={() => setActiveDate(subMonths(activeDate, 1))}
+        />
+        <AiOutlineRight
+          onClick={() => setActiveDate(addMonths(activeDate, 1))}
+        />
+        <h2 className={styles.currentMonth}>{format(activeDate, "MMMM yyyy")}</h2>
+      </div>
+    );
+  };
+
+  const getWeekDaysNames = () => {
+    const weekStartDate = startOfWeek(activeDate); 
+    const weekDays = [];
+    for (let day = 0; day < 7; day++) {
+      weekDays.push(
+        <div className={styles.weekDay}>
+           {format(addDays(weekStartDate, day), "E")}
+        </div>
+      );
     }
-  }
-  const generateWeeks = (dates: Array<Date>) => {
-    let daysInWeek = 7;
-    let tempArray = [];
-    for (let i=0; i < dates.length;i+= daysInWeek) {
-      tempArray.push(dates.slice(i,i+daysInWeek));
+    return <div className={styles.weekContainer}>{weekDays}</div>;
+  };
+
+  const generateDatesForCurrentWeek = (date: Date, selectedDate: Date, activeDate: Date) => {
+    let currentDate: Date = date;
+    const week: JSX.Element[] = [];
+    for (let day = 0; day < 7; day++) {
+      const cloneDate: Date = new Date(currentDate);
+      let classNames: string = styles.date;
+      if (!isSameMonth(currentDate, activeDate)) {
+        classNames += " " + styles.inactiveDay;
+      }
+      if (isSameDay(currentDate, selectedDate)) {
+        classNames += " " + styles.selectedDay;
+      }
+      if (isSameDay(currentDate, new Date())) {
+        classNames += " " + styles.today;
+      }
+      week.push(
+        <div
+          className={classNames}
+          onClick={() => {
+            setSelectedDate(cloneDate);
+          }}
+          key={day}
+        >
+          {format(currentDate, "d")}
+        </div>
+      );
+      currentDate = addDays(currentDate, 1);
     }
-    return tempArray;
-  }
+    return <>{week}</>;
+  };
+
+  const getDates = () => {
+    const startOfTheSelectedMonth = startOfMonth(activeDate);
+    const endOfTheSelectedMonth = endOfMonth(activeDate);
+    const startDate = startOfWeek(startOfTheSelectedMonth);
+    const endDate = endOfWeek(endOfTheSelectedMonth);
+
+    let currentDate = startDate;
+
+    const allWeeks: JSX.Element[]=[];
+
+    while (currentDate <= endDate) {
+      allWeeks.push(
+        generateDatesForCurrentWeek(currentDate, selectedDate, activeDate)
+      );
+      currentDate = addDays(currentDate, 7);
+    }
+
+    return <div className={styles.weekContainer}>{allWeeks}</div>;
+  };
+
   return (
+    
     <div className={styles.calendarContainer}>
-      <div className={styles.datepickerContainer}></div>
-      <div className={styles.weekdayContainer}>
-        {Weekdays.map(day => (
-          <div className={styles.weekDay}>{day}</div>
-        ))}
-      </div>
-      <div className={styles.calendar}>
-        {generateWeeks(monthDates).map(week => (
-          <div className={styles.week}>
-            {week.map(day => (generateDates(day.day)))}
-          </div>
-        ))
-        }
-      </div>
+      {getHeader()}
+      {getWeekDaysNames()}
+      {getDates()}
     </div>
-  )
-}
+  );
+};
+

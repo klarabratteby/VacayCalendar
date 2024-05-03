@@ -1,35 +1,71 @@
 .calendarContainer {
-  width: 85%;
+  width: 95%;
   margin: auto;
-  padding-top: 20%;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
 .datepickerContainer {
+  display: flex;
+  align-items: center;
+  background: white;
+}
+
+.changeMonth {
+  margin: 0px 20px;
+}
+
+.currentMonth {
+  margin-left: 24px;
+  font-size: 24px;
+}
+
+.weekContainer {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: white;
+  padding: 1rem 0; 
+  place-items: center;
 
 }
 
-.weekdayContainer {
+.date {
+  margin: 12px;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
   display: flex;
-  margin: auto;
-  justify-content: space-around;
-  background: white;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  padding-top: 10%;
-
+  justify-content: center;
+  align-items: center;
 }
 
 .weekDay {
-  color:lightgray
-
+  cursor: default;
+  padding: 0.2rem; 
 }
 
-.calendar {
-
+.inactiveDay {
+  color: #9e9e9e;
+}
+.today {
+  background: #efefee;
+  border-radius: 50%;
 }
 
-.week {
+.selectedDay {
+  color: white;
+  background: #3366ff;
+  border-radius: 50%;
   
 }
 
+.todayButton {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-right: 8px;
+}
 
-
+.todayButton:hover {
+  background: #efefef;
+}
