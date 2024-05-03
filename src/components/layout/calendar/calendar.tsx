@@ -33,7 +33,6 @@ export default function Calendar() {
         <Button onClick={() => {
 
         }}/>
-        
       </div>
     );
   };
@@ -99,7 +98,7 @@ export default function Calendar() {
       currentDate = addDays(currentDate, 7);
     }
 
-    return <div className={styles.weekContainer}>{allWeeks}</div>;
+    return (<div className={styles.weekContainer}>{allWeeks}</div>);
   };
 
   return (

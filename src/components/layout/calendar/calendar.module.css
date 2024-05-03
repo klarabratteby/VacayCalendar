@@ -1,7 +1,10 @@
 .calendarContainer {
-  width: 95%;
+  width: 96%;
   margin: auto;
+  padding-top: 5%;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
 }
 
 .datepickerContainer {
@@ -9,6 +12,7 @@
   align-items: center;
   background: white;
   justify-content: center;
+  
 }
 
 .changeMonth {
@@ -23,24 +27,26 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   background: white;
-  padding: 1rem 0; 
   place-items: center;
-
+  
 }
 
+
 .date {
-  margin: 12px;
-  height: 30px;
-  width: 30px;
+  height: 10.84vw; 
+  width: 10.84vw;
   cursor: pointer;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items:flex-start;
+  justify-content: space-around;
+  font-size: 0.7rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .weekDay {
   cursor: default;
   padding: 0.2rem; 
+  margin: 0;
 }
 
 .inactiveDay {
@@ -48,12 +54,11 @@
 }
 .today {
   background: #efefee;
-  border-radius: 50%;
 }
 
 .selectedDay {
   color: white;
   background: #3366ff;
-  border-radius: 50%;
+  
   
 }
