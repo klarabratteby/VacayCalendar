@@ -73,7 +73,7 @@ export default function Calendar() {
           }}
           key={day}
         >
-          {format(currentDate, "d")}
+          <span className={styles.number}>{format(currentDate, "d")}</span>
         </div>
       );
       currentDate = addDays(currentDate, 1);
