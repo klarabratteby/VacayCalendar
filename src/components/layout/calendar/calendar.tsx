@@ -12,9 +12,9 @@ import {
   isSameDay,
   subMonths,
   addMonths
-} from "date-fns";
-
+} from "date-fns"
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import Button from '@/components/ui/buttons/addVacay'
 
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -23,22 +23,17 @@ export default function Calendar() {
   const getHeader = () => {
     return (
       <div className={styles.datepickerContainer}>
-        <div
-          className={styles.todayButton}
-          onClick={() => {
-            setSelectedDate(new Date());
-            setActiveDate(new Date());
-          }}
-        >
-          Today
-        </div>
         <AiOutlineLeft
           onClick={() => setActiveDate(subMonths(activeDate, 1))}
         />
+        <h2 className={styles.currentMonth}>{format(activeDate, "MMMM yyyy")}</h2>
         <AiOutlineRight
           onClick={() => setActiveDate(addMonths(activeDate, 1))}
         />
-        <h2 className={styles.currentMonth}>{format(activeDate, "MMMM yyyy")}</h2>
+        <Button onClick={() => {
+
+        }}/>
+        
       </div>
     );
   };
