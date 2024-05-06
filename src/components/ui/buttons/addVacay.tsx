@@ -10,7 +10,7 @@ export default function Button(props: Props) {
   
   return (
     <div className={styles.vacayButton} onClick={props.onClick}>
-      Button
+      
     </div>
   );
 }
