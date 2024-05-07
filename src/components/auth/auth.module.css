@@ -7,6 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 2rem;
   
 }
 
@@ -18,7 +19,8 @@
 .loginForm div {
   margin-bottom: 2rem; 
 }
-
+/**
 .loginButton {
  width: 5rem;
 }
+**/

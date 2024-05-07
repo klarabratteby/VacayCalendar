@@ -14,7 +14,7 @@ import {
   addMonths
 } from "date-fns"
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import Button from '@/components/ui/buttons/addVacay'
+import Button from '@/components/ui/button/button'
 
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -30,9 +30,7 @@ export default function Calendar() {
         <AiOutlineRight
           onClick={() => setActiveDate(addMonths(activeDate, 1))}
         />
-        <Button onClick={() => {
-
-        }}/>
+        
       </div>
     );
   };
