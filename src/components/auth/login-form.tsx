@@ -3,11 +3,12 @@ import React, {useState} from 'react';
 import styles from './auth.module.css'
 import Button from '@/components/ui/button/button'
 import {signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
-import router from 'next/router';
+import {useRouter} from 'next/navigation';
 import {auth} from '../../lib/firebaseConfig';
 
 
 export default function LoginForm() {
+  const router = useRouter();
   
   //Implement later
   const handleSignIn = async () => {
@@ -17,14 +18,12 @@ export default function LoginForm() {
   const handleGoogleAuth = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider)
+      await signInWithPopup(auth, provider);
+      router.push('/calendar');
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    //router.push('/')
-    
-    
-  }
+  };
 
   return(
     <div className={styles.loginContainer}>
