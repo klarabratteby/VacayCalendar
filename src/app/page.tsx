@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "../app/page.module.css"
 import LoginForm from "@/components/auth/login-form";
+import SignUpForm from "@/components/auth/signup";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
     <main className={styles.main}>
 
         <LoginForm />
+       
     </main>
   );
 }

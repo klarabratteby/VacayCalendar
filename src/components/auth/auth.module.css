@@ -11,9 +11,18 @@
   
 }
 
+
+
 .loginForm {
   display: flex;
   flex-direction: column;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
 }
 
 .loginForm div {
