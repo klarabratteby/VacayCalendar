@@ -15,7 +15,7 @@ export default function Navbar() {
           <Home />
         </button>
         </Link>
-        <Link href="/calendar">
+        <Link href="/login">
         <button className={styles.iconButton}>
           <User />
         </button>

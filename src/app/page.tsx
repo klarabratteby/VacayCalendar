@@ -1,14 +1,13 @@
 import Image from "next/image";
 import styles from "../app/page.module.css"
-import LoginForm from "@/components/auth/login-form";
-import SignUpForm from "@/components/auth/signup";
 
 export default function Home() {
   return (
 
     <main className={styles.main}>
 
-        <LoginForm />
+    <h1>WELCOME TO VACAYCALENDAR</h1>
+        
        
     </main>
   );
