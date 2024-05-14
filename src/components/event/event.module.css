@@ -1,0 +1,10 @@
+.AddEventForm {
+  position: absolute;
+  
+}
+
+@media screen and (max-width: 600px) {
+  .AddEventForm {
+    display: none; /* Hide the form on smaller screens */
+  }
+}

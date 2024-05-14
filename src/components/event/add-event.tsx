@@ -1,10 +1,12 @@
 import React, {FormEvent, useState} from 'react';
 import Form from '@/components/ui/form/form';
 import Button from '@/components/ui/button/button'
+import styles from './event.module.css'
 
 interface Props {
   onClose: () => void;
   onEventAdded: (event: EventData) => void;
+  position: { top: number; right: number };
 }
 
 interface EventData {
@@ -14,7 +16,7 @@ interface EventData {
 }
 
 
-export default function AddEventForm({onClose, onEventAdded} : Props) {
+export default function AddEventForm({onClose, onEventAdded,position} : Props) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -43,8 +45,9 @@ export default function AddEventForm({onClose, onEventAdded} : Props) {
 };
 
 return (
+  <div className={styles.AddEventForm} style={{ top: position.top, right: position.right}}>
   <Form>
-    <div>
+      <div>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
@@ -61,16 +64,9 @@ return (
         <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
       </div>
       <Button text="Add Event" onClick={handleSubmit} />
-
+  
   </Form>
- 
-
-
-
-
-
- 
-
+  </div>
 );
 
 

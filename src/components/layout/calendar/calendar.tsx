@@ -21,9 +21,22 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeDate, setActiveDate] = useState<Date>(new Date());
   const [isAddEventFormOpen, setIsAddEventFormOpen] = useState(false);
+  const [addEventFormPosition, setAddEventFormPosition] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
 
-  const openAddEventForm = () => {
-    setIsAddEventFormOpen(true);
+
+  const openAddEventForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date) => {
+    const calendarContainer = document.querySelector(`.${styles.calendarContainer}`);
+    if (calendarContainer) {
+      const rect = calendarContainer.getBoundingClientRect();
+      const cellRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+      const position = {
+        top: cellRect.top - rect.top - cellRect.height + 40, // Position above the selected day
+        right: rect.width - cellRect.right + rect.left + 20, // Position to the left of the selected day, considering the width of the calendar
+      };
+      setIsAddEventFormOpen(true);
+      setSelectedDate(date);
+      setAddEventFormPosition(position);
+    }
   };
 
   const closeAddEventForm = () => {
@@ -76,9 +89,9 @@ export default function Calendar() {
       week.push(
         <div
           className={classNames}
-          onClick={() => {
+          onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             setSelectedDate(cloneDate);
-            openAddEventForm();
+            openAddEventForm(event, cloneDate);
           }}
           key={day}
         >
@@ -101,13 +114,19 @@ export default function Calendar() {
     const allWeeks: JSX.Element[]=[];
 
     while (currentDate <= endDate) {
+      const weekStartDate = currentDate;
+      const weekEndDate = addDays(currentDate, 6); // Calculate end date of the week
+      const key = `${format(weekStartDate, "yyyy-MM-dd")}-${format(weekEndDate, "yyyy-MM-dd")}`;
+      const week = generateDatesForCurrentWeek(currentDate, selectedDate, activeDate);
       allWeeks.push(
-        generateDatesForCurrentWeek(currentDate, selectedDate, activeDate)
+        <div key={key} className={styles.weekContainer}>
+          {week}
+        </div>
       );
       currentDate = addDays(currentDate, 7);
     }
 
-    return (<div className={styles.weekContainer}>{allWeeks}</div>);
+    return allWeeks;
   };
 
   return (
@@ -116,7 +135,7 @@ export default function Calendar() {
       {getHeader()}
       {getWeekDaysNames()}
       {getDates()}
-      {isAddEventFormOpen && <AddEventForm onClose={closeAddEventForm} onEventAdded={(event) => console.log(event)} />}
+      {isAddEventFormOpen && <AddEventForm onClose={closeAddEventForm} onEventAdded={(event) => console.log(event)} position={addEventFormPosition} />}
     </div>
   );
 };
