@@ -4,15 +4,14 @@ import React from 'react';
 
 interface Props {
   text: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  type?:  "button" | "submit" | "reset";
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function Button({ text, onClick, type}: Props) {
+export default function Button(props: Props) {
   
   return (
-    <button className={styles.primButton} onClick={onClick} type={type || 'button'}>
-      {text}
+    <button className={styles.primButton} onClick={props.onClick}>
+      {props.text}
     </button>
   );
 }

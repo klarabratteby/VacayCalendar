@@ -14,11 +14,21 @@ import {
   addMonths
 } from "date-fns"
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import Button from '@/components/ui/button/button'
+import AddEventForm from "@/components/event/add-event";
+
 
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeDate, setActiveDate] = useState<Date>(new Date());
+  const [isAddEventFormOpen, setIsAddEventFormOpen] = useState(false);
+
+  const openAddEventForm = () => {
+    setIsAddEventFormOpen(true);
+  };
+
+  const closeAddEventForm = () => {
+    setIsAddEventFormOpen(false);
+  };
 
   const getHeader = () => {
     return (
@@ -40,7 +50,7 @@ export default function Calendar() {
     const weekDays = [];
     for (let day = 0; day < 7; day++) {
       weekDays.push(
-        <div className={styles.weekDay}>
+        <div className={styles.weekDay} key={day}>
            {format(addDays(weekStartDate, day), "E")}
         </div>
       );
@@ -68,6 +78,7 @@ export default function Calendar() {
           className={classNames}
           onClick={() => {
             setSelectedDate(cloneDate);
+            openAddEventForm();
           }}
           key={day}
         >
@@ -105,6 +116,7 @@ export default function Calendar() {
       {getHeader()}
       {getWeekDaysNames()}
       {getDates()}
+      {isAddEventFormOpen && <AddEventForm onClose={closeAddEventForm} onEventAdded={(event) => console.log(event)} />}
     </div>
   );
 };

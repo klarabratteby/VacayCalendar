@@ -6,6 +6,7 @@ import {signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider} from 'f
 import {useRouter} from 'next/navigation';
 import {auth} from '../../lib/firebaseConfig';
 import Link from 'next/link';
+import Form from '@/components/ui/form/form';
 
 
 export default function LoginForm() {
@@ -41,9 +42,7 @@ export default function LoginForm() {
   };
 
   return(
-    <div className={styles.loginContainer}>
-       
-          <form className={styles.loginForm}>
+        <Form>
           <Link href="/register"><p>Register</p></Link>
             <div>
               <label htmlFor="email">Email</label>
@@ -57,8 +56,8 @@ export default function LoginForm() {
             <Button onClick={handleSignIn} text="Sign in"/>
             <p> or </p>
             <Button onClick={handleGoogleAuth} text="Sign in with Google"  />
-          </form>
-    </div> 
+      </Form>
+    
 
   );
 }
