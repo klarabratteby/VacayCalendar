@@ -17,6 +17,7 @@ export default function LoginForm() {
   
   //Implement later
   const handleSignIn = async (e: any) => {
+    e.preventDefault(); 
     try {
       if (!email || !password) {
         setError('Please enter both email and password')
@@ -31,7 +32,8 @@ export default function LoginForm() {
   };
  
 
-  const handleGoogleAuth = async () => {
+  const handleGoogleAuth = async (e: any) => {
+    e.preventDefault(); 
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);

@@ -16,13 +16,14 @@ export default function SignUpForm() {
   
 
   const handleSignUp = async (e: any) => {
+    e.preventDefault(); 
     try {
       if (!email || !password) {
         setError('Please enter both email and password')
         return;
       }
       await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/');
+      router.push('/login');
     } catch (error: any) {
       setError(error.message);
       console.log(error);
