@@ -15,6 +15,7 @@ import {
 } from "date-fns"
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import AddEventForm from "@/components/event/add-event";
+import { EventData } from '@/components/event/add-event';
 
 
 export default function Calendar() {
@@ -22,7 +23,7 @@ export default function Calendar() {
   const [activeDate, setActiveDate] = useState<Date>(new Date());
   const [isAddEventFormOpen, setIsAddEventFormOpen] = useState(false);
   const [addEventFormPosition, setAddEventFormPosition] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
-
+  const [events, setEvent] = useState<EventData[]>([]);
 
   const openAddEventForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date) => {
     const calendarContainer = document.querySelector(`.${styles.calendarContainer}`);
@@ -42,6 +43,11 @@ export default function Calendar() {
   const closeAddEventForm = () => {
     setIsAddEventFormOpen(false);
   };
+
+  const handleEventData = (event: EventData) => {
+    console.log("Event added:", event);
+    setEvent([...events, event]);
+  }
 
   const getHeader = () => {
     return (
@@ -86,6 +92,8 @@ export default function Calendar() {
       if (isSameDay(currentDate, new Date())) {
         classNames += " " + styles.today;
       }
+      // ensure that the submitted form-data gets added to the right day
+      const eventsForDay = events.filter(event => isSameDay(event.date, cloneDate));
       week.push(
         <div
           className={classNames}
@@ -96,6 +104,17 @@ export default function Calendar() {
           key={day}
         >
           <span className={styles.number}>{format(currentDate, "d")}</span>
+          
+            {eventsForDay.map((event, index) => (
+            <div key={index} className={styles.eventContainer}>
+              <div className={styles.eventContent}>
+                <div>{event.title}</div>
+                <div>{format(event.date, "yyyy-MM-dd")}</div>
+                <div>{event.description}</div>
+              </div>
+            </div>
+            ))}
+          
         </div>
       );
       currentDate = addDays(currentDate, 1);
@@ -135,7 +154,8 @@ export default function Calendar() {
       {getHeader()}
       {getWeekDaysNames()}
       {getDates()}
-      {isAddEventFormOpen && <AddEventForm onClose={closeAddEventForm} onEventAdded={(event) => console.log(event)} position={addEventFormPosition} />}
+      {isAddEventFormOpen && <AddEventForm onClose={closeAddEventForm} onEventAdded={handleEventData} position={addEventFormPosition} />}
+      
     </div>
   );
 };

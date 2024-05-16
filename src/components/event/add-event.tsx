@@ -11,7 +11,7 @@ interface Props {
   
 }
 
-interface EventData {
+export interface EventData {
   title: string;
   date: Date;
   description: string;
@@ -27,31 +27,41 @@ export default function AddEventForm({onClose, onEventAdded,position} : Props) {
   
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    console.log("Submitting form...");
+    console.log("Title:", title);
+    console.log("Date:", date);
+    console.log("Time:", time);
+    console.log("Description:", description);
 
-  const event = {
-    title, 
-    date: new Date(date + 'T' + time),
-    description
-  };
+    
 
-  onEventAdded(event);
+    const event = {
+      title, 
+      date: new Date(date + 'T' + time),
+      description
+    };
 
-  // Reset form
-  setTitle('');
-  setDate('');
-  setTime('');
-  setDescription('');
+    onEventAdded(event);
+    
 
-  onClose();
+    // Reset form
+    setTitle('');
+    setDate('');
+    setTime('');
+    setDescription('');
+
+    onClose();
 
 };
 
 // When a user clicks outside of the AddEventForm
 useEffect(() => {
+
   const handleClickOutside = (event: MouseEvent | TouchEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
       onClose();
     }
+
   };
   document.addEventListener('mousedown', handleClickOutside);
   document.addEventListener('touchend', handleClickOutside);
@@ -63,11 +73,9 @@ useEffect(() => {
 
 
 return (
-  <div className={styles.AddEventForm} style={{ top: position.top, right: position.right}}>
+  <div className={styles.AddEventForm} style={{ top: position.top, right: position.right}} ref={ref}>
   <Form>
-      <div ref={ref}>
-        <IoMdClose onClick={onClose} className={styles.closeButton} />
-      </div>
+      <IoMdClose onClick={onClose} className={styles.closeButton} />
       <div>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -86,7 +94,6 @@ return (
       </div>
       <Button text="Add Event" onClick={handleSubmit} />
 
-  
   </Form>
   </div>
 );

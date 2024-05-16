@@ -82,3 +82,22 @@
   justify-content: center;
  
 }
+
+.eventContainer {
+  background-color: pink;
+  height: 3vw; 
+  width: 10.84vw;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-top: 1rem;
+}
+
+.eventContent {
+  font-size: 10px;
+  
+
+}
+
+
+
