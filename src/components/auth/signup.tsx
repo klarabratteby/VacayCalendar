@@ -6,6 +6,7 @@ import Form from '@/components/ui/form/form'
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {useRouter} from 'next/navigation';
 import {auth} from '../../lib/firebaseConfig';
+import { saveUserData } from '@/lib/firestore/user';
 
 
 export default function SignUpForm() {
@@ -22,7 +23,14 @@ export default function SignUpForm() {
         setError('Please enter both email and password')
         return;
       }
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user?.uid; 
+      if (!uid) {
+        setError('Failed to create user');
+        return;
+      }
+      const userEmail = userCredential.user?.email ?? '';
+      await saveUserData(uid, { email: userEmail });
       router.push('/login');
     } catch (error: any) {
       setError(error.message);

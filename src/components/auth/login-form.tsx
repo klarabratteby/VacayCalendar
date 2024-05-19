@@ -7,6 +7,8 @@ import {useRouter} from 'next/navigation';
 import {auth} from '../../lib/firebaseConfig';
 import Link from 'next/link';
 import Form from '@/components/ui/form/form';
+import {saveUserData} from '../../lib/firestore/user';
+
 
 
 export default function LoginForm() {
@@ -36,7 +38,12 @@ export default function LoginForm() {
     e.preventDefault(); 
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const userCredential = await signInWithPopup(auth, provider);
+      const uid = userCredential.user.uid;
+      // Extract user's email and handle null case
+      const email = userCredential.user.email || '';
+      // Save user data to Firestore
+      await saveUserData(uid, {email});
       router.push('/calendar');
     } catch (error) {
       console.log(error);
