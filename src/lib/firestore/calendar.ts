@@ -3,25 +3,27 @@ import { db } from "../firebaseConfig";
 import {EventData} from '../../components/event/add-event';
 
 
-// Saving and updating calendar 
-export const saveCalendarData = async (uid: string, eventData: EventData) => {
 
-  const calendarRef = doc(db, 'calendars', uid);
-  const calendarSnap = await getDoc(calendarRef);
+// Save calendar data for a user
+export const saveCalendarData = async (uid: string, events: EventData[]) => {
+  const userRef = doc(db, 'calendars', uid);
+  await setDoc(userRef, { events }, { merge: true });
+}
 
-  if (calendarSnap.exists()) {
-    const existingEvents = calendarSnap.data().events || [];
-    await updateDoc(calendarRef, {
-      events: [...existingEvents, eventData]
-    });
-  } else {
-    await setDoc(calendarRef, { events: [eventData] });
+// Retrieve calendar data for a user
+export const getCalendarData = async (uid: string) => {
+  const userRef = doc(db, 'calendars', uid);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    const data = userSnap.data();
+    if (data && data.events) {
+      // Convert Firestore Timestamps to Date objects
+      const events = data.events.map((event: any) => ({
+        ...event,
+        date: event.date.toDate() // Convert Timestamp to Date
+      }));
+      return events;
+    }
   }
-};
-
-// Fetching calendar data for a specific user
-export const getCalendarData = async (uid: string): Promise<EventData[]> => {
-  const calendarRef = doc(db, 'calendars', uid);
-  const calendarSnap = await getDoc(calendarRef);
-  return calendarSnap.exists() ? (calendarSnap.data().events as EventData[]) : [];
-};
+  return [];
+}

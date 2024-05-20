@@ -4,6 +4,7 @@ import Button from '@/components/ui/button/button';
 import styles from './event.module.css';
 import { IoMdClose } from "react-icons/io";
 
+
 interface Props {
   onClose: () => void;
   onEventAdded: (event: EventData) => void;

@@ -42,9 +42,10 @@ export default function Calendar() {
     const fetchData = async () => {
       if (!uid) return; // Ensure UID is available
       try {
-        const eventData = await getCalendarData(uid);
         // Update state with fetched event data
+        const eventData = await getCalendarData(uid);
         if (eventData) {
+          console.log("Fetched event data:", eventData);
           setEvent(eventData);
         }
       } catch (error) {
@@ -76,12 +77,14 @@ export default function Calendar() {
     setIsAddEventFormOpen(false);
   };
 
-  const handleEventData = (event: EventData) => {
+  const handleEventData = async (event: EventData) => {
     console.log("Event added:", event);
-    const updatedEvents = ([...events, event]);
+    const updatedEvents: EventData[] = [...events, event];
     setEvent(updatedEvents);
-    saveCalendarData(uid,event);
-  }
+    if (uid) {
+      await saveCalendarData(uid, updatedEvents); // Save all events after adding the new one
+    }
+  };
 
   const getHeader = () => {
     return (
