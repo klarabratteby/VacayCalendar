@@ -5,6 +5,7 @@ import {EventData} from '../../components/event/add-event';
 
 // Saving and updating calendar 
 export const saveCalendarData = async (uid: string, eventData: EventData) => {
+
   const calendarRef = doc(db, 'calendars', uid);
   const calendarSnap = await getDoc(calendarRef);
 
