@@ -45,7 +45,6 @@ export default function Calendar() {
         // Update state with fetched event data
         const eventData = await getCalendarData(uid);
         if (eventData) {
-          console.log("Fetched event data:", eventData);
           setEvent(eventData);
         }
       } catch (error) {
@@ -78,7 +77,6 @@ export default function Calendar() {
   };
 
   const handleEventData = async (event: EventData) => {
-    console.log("Event added:", event);
     const updatedEvents: EventData[] = [...events, event];
     setEvent(updatedEvents);
     if (uid) {
