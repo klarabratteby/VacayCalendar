@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './calendar.module.css'
 import {
   format,
@@ -16,6 +16,9 @@ import {
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import AddEventForm from "@/components/event/add-event";
 import { EventData } from '@/components/event/add-event';
+import { saveCalendarData, getCalendarData } from "@/lib/firestore/calendar";
+import { onAuthStateChanged } from "firebase/auth";
+import {auth} from '../../../lib/firebaseConfig'
 
 
 export default function Calendar() {
@@ -24,6 +27,35 @@ export default function Calendar() {
   const [isAddEventFormOpen, setIsAddEventFormOpen] = useState(false);
   const [addEventFormPosition, setAddEventFormPosition] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
   const [events, setEvent] = useState<EventData[]>([]);
+  const [uid, setUid] = useState<string>('');
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUid(user.uid);
+      }
+    });
+    return unsubscribe;
+  }, []);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!uid) return; // Ensure UID is available
+      try {
+        const eventData = await getCalendarData(uid);
+        // Update state with fetched event data
+        if (eventData) {
+          setEvent(eventData);
+        }
+      } catch (error) {
+        console.error("Error fetching event data:", error);
+      }
+    };
+
+    fetchData();
+
+  }, [uid]);
+  
 
   const openAddEventForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date) => {
     const calendarContainer = document.querySelector(`.${styles.calendarContainer}`);
@@ -46,7 +78,9 @@ export default function Calendar() {
 
   const handleEventData = (event: EventData) => {
     console.log("Event added:", event);
-    setEvent([...events, event]);
+    const updatedEvents = ([...events, event]);
+    setEvent(updatedEvents);
+    saveCalendarData(uid,event);
   }
 
   const getHeader = () => {
