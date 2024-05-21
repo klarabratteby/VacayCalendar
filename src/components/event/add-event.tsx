@@ -3,6 +3,7 @@ import Form from '@/components/ui/form/form';
 import Button from '@/components/ui/button/button';
 import styles from './event.module.css';
 import { IoMdClose } from "react-icons/io";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 
 interface Props {
@@ -33,8 +34,6 @@ export default function AddEventForm({onClose, onEventAdded,position} : Props) {
     console.log("Date:", date);
     console.log("Time:", time);
     console.log("Description:", description);
-
-    
 
     const event = {
       title, 
@@ -72,11 +71,18 @@ useEffect(() => {
   };
 }, [onClose]);
 
+const headerContent = (
+  <div className={styles.eventButtonContainer}>
+    <FaRegTrashAlt className={styles.iconButton} />
+    <IoMdClose onClick={onClose} className={styles.iconButton} />
+  </div>
+);
+
+
 
 return (
   <div className={styles.AddEventForm} style={{ top: position.top, right: position.right}} ref={ref}>
-  <Form>
-      <IoMdClose onClick={onClose} className={styles.closeButton} />
+  <Form header={headerContent}>
       <div>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />

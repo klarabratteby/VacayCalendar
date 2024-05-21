@@ -5,16 +5,19 @@
 
 @media screen and (max-width: 600px) {
   .AddEventForm {
-    display: none; /* Hide the form on smaller screens */
+    display: none; 
   }
 }
 
+.eventButtonContainer {
+  display: flex;
+  margin-top: 0.5rem;
+}
 
-.closeButton {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+.iconButton {
   height: 1.2rem;
   width: 1.2rem;
-  color: rgb(90, 90, 90);
+  margin-right: 0.5rem; 
+  color: rgb(159, 157, 157);
+
 }
