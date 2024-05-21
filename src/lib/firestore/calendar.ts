@@ -25,3 +25,18 @@ export const getCalendarData = async (uid: string) => {
   }
   return [];
 }
+
+export const deleteCalendarEvent = async (uid: string, selectedEventIndex: number) => {
+  const userRef = doc(db,'calendars',uid);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    const data = userSnap.data();
+    if (data && data.events) {
+      // Filter out the selected event based on index 
+      const eventsAfterDelete = [...data.events];
+      eventsAfterDelete.splice(selectedEventIndex, 1)
+      await updateDoc(userRef, {events: eventsAfterDelete });
+      return eventsAfterDelete;
+    }
+  }
+}

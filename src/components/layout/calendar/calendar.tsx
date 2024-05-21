@@ -16,7 +16,7 @@ import {
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import AddEventForm from "@/components/event/add-event";
 import { EventData } from '@/components/event/add-event';
-import { saveCalendarData, getCalendarData } from "@/lib/firestore/calendar";
+import { saveCalendarData, getCalendarData, deleteCalendarEvent } from "@/lib/firestore/calendar";
 import { onAuthStateChanged } from "firebase/auth";
 import {auth} from '../../../lib/firebaseConfig'
 
@@ -28,6 +28,7 @@ export default function Calendar() {
   const [addEventFormPosition, setAddEventFormPosition] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
   const [events, setEvent] = useState<EventData[]>([]);
   const [uid, setUid] = useState<string>('');
+  const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -57,7 +58,7 @@ export default function Calendar() {
   }, [uid]);
   
 
-  const openAddEventForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date) => {
+  const openAddEventForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date,eventIndex: number | null = null) => {
     const calendarContainer = document.querySelector(`.${styles.calendarContainer}`);
     if (calendarContainer) {
       const rect = calendarContainer.getBoundingClientRect();
@@ -69,11 +70,14 @@ export default function Calendar() {
       setIsAddEventFormOpen(true);
       setSelectedDate(date);
       setAddEventFormPosition(position);
+      setSelectedEventIndex(eventIndex);
     }
   };
 
   const closeAddEventForm = () => {
     setIsAddEventFormOpen(false);
+    setSelectedEventIndex(null);
+    
   };
 
   const handleEventData = async (event: EventData) => {
@@ -84,6 +88,18 @@ export default function Calendar() {
     }
   };
 
+  const handleDeleteEvent = async () => {
+    if (selectedEventIndex === null || !uid) return;
+    try {
+      const afterRemove = [...events];
+      afterRemove.splice(selectedEventIndex, 1);
+      setEvent(afterRemove);
+      await deleteCalendarEvent(uid, selectedEventIndex);
+      closeAddEventForm();
+    } catch (error) {
+      console.error("Error handling event deletion:", error);
+    }
+  };
   const getHeader = () => {
     return (
       <div className={styles.datepickerContainer}>
@@ -139,19 +155,20 @@ export default function Calendar() {
           key={day}
         >
           <span className={styles.number}>{format(currentDate, "d")}</span>
-          
-            {eventsForDay.map((event, index) => (
-            <div key={index} className={styles.eventContainer}>
-              <div className={styles.eventContent}>
-                <div>{event.title}</div>
-                <div>{format(event.date, "yyyy-MM-dd")}</div>
-                <div>{event.description}</div>
-              </div>
+        {eventsForDay.map((event, index) => (
+          <div key={index} className={styles.eventContainer} onClick={(e) => {
+            e.stopPropagation(); // Prevent triggering the outer div's onClick
+            openAddEventForm(e, cloneDate, index);
+          }}>
+            <div className={styles.eventContent}>
+              <div>{event.title}</div>
+              <div>{format(event.date, "yyyy-MM-dd")}</div>
+              <div>{event.description}</div>
             </div>
-            ))}
-          
-        </div>
-      );
+          </div>
+        ))}
+      </div>
+    );
       currentDate = addDays(currentDate, 1);
     }
     return <>{week}</>;
@@ -189,7 +206,7 @@ export default function Calendar() {
       {getHeader()}
       {getWeekDaysNames()}
       {getDates()}
-      {isAddEventFormOpen && <AddEventForm onClose={closeAddEventForm} onEventAdded={handleEventData} position={addEventFormPosition} />}
+      {isAddEventFormOpen && <AddEventForm onClose={closeAddEventForm} onEventAdded={handleEventData} onDeleteEvent={handleDeleteEvent} position={addEventFormPosition} />}
       
     </div>
   );

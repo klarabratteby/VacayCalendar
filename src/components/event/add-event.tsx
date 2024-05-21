@@ -9,6 +9,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 interface Props {
   onClose: () => void;
   onEventAdded: (event: EventData) => void;
+  onDeleteEvent: () => void;
   position: { top: number; right: number };
   
 }
@@ -17,10 +18,11 @@ export interface EventData {
   title: string;
   date: Date;
   description: string;
+  
 }
 
 
-export default function AddEventForm({onClose, onEventAdded,position} : Props) {
+export default function AddEventForm({onClose, onEventAdded, onDeleteEvent, position} : Props) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -73,7 +75,7 @@ useEffect(() => {
 
 const headerContent = (
   <div className={styles.eventButtonContainer}>
-    <FaRegTrashAlt className={styles.iconButton} />
+    <FaRegTrashAlt onClick={onDeleteEvent} className={styles.iconButton} />
     <IoMdClose onClick={onClose} className={styles.iconButton} />
   </div>
 );
