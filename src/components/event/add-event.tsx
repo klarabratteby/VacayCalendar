@@ -2,8 +2,7 @@ import React, {useRef, useEffect, useState} from 'react';
 import Form from '@/components/ui/form/form';
 import Button from '@/components/ui/button/button';
 import styles from './event.module.css';
-import { IoMdClose } from "react-icons/io";
-import { FaRegTrashAlt } from "react-icons/fa";
+import {Trash2,X,Edit} from "react-feather";
 
 
 interface Props {
@@ -73,10 +72,12 @@ useEffect(() => {
   };
 }, [onClose]);
 
+
 const headerContent = (
   <div className={styles.eventButtonContainer}>
-    <FaRegTrashAlt onClick={onDeleteEvent} className={styles.iconButton} />
-    <IoMdClose onClick={onClose} className={styles.iconButton} />
+    <Edit className={styles.iconButton}/>
+    <Trash2 onClick={onDeleteEvent} className={styles.iconButton} />
+    <X onClick={onClose} className={styles.iconButton} />
   </div>
 );
 
