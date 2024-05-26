@@ -4,8 +4,6 @@
   padding-top: 5%;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  
-
 }
 
 .datepickerContainer {
@@ -14,7 +12,6 @@
   background: white;
   justify-content: center;
   padding-bottom: 3%;
-  
 }
 
 .changeMonth {
@@ -32,13 +29,12 @@
   place-items: center;
 }
 
-
 .date {
-  height: 10.84vw; 
+  height: 10.84vw;
   width: 10.84vw;
   cursor: pointer;
   display: flex;
-  align-items:flex-start;
+  align-items: flex-start;
   justify-content: space-around;
   font-size: 0.7rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -50,7 +46,7 @@
 
 .weekDay {
   cursor: default;
-  padding: 0.2rem; 
+  padding: 0.2rem;
   margin: 0;
 }
 
@@ -62,7 +58,7 @@
   border: 1px solid #9ec1f6;
   border-radius: 50%;
   width: 1.3rem;
-  height:1.3rem;
+  height: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,28 +72,31 @@
   color: #185abc;
   border-radius: 50%;
   width: 1.3rem;
-  height:1.3rem;
+  height: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
- 
 }
 
 .eventContainer {
-  background-color: pink;
-  height: 3vw; 
+  background-color: rgb(234, 108, 230);
+  height: 1.5vw;
   width: 10.84vw;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   position: absolute;
   margin-top: 1.4rem;
 }
 
 .eventContent {
-  font-size: 10px;
-  
-
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  padding-left: 0.5rem;
+  display: flex;
+  align-items: center;
 }
 
-
-
+.eventContent > div {
+  margin-right: 0.2rem;
+}

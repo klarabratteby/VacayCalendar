@@ -1,11 +1,10 @@
 .AddEventForm {
   position: absolute;
-  
 }
 
 @media screen and (max-width: 600px) {
   .AddEventForm {
-    display: none; 
+    display: none;
   }
 }
 
@@ -17,8 +16,6 @@
 .iconButton {
   height: 1.2rem;
   width: 1.2rem;
-  margin-right: 0.7rem; 
+  margin-right: 0.7rem;
   color: rgb(159, 157, 157);
 }
-
-

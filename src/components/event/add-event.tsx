@@ -15,14 +15,14 @@ export interface EventData {
   title: string;
   date: Date;
   description: string;
+  time: string;
 }
 
 export default function AddEventForm({
   onClose,
   onEventAdded,
   position,
-
-  event = { title: "", date: new Date(), description: "" },
+  event = { title: "", date: new Date(), description: "", time: "" },
 }: Props) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
@@ -32,10 +32,12 @@ export default function AddEventForm({
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    const eventDate = new Date(`${date}T${time || "00:00"}`); // if time isnt provided => default set to 00
     const event = {
       title,
-      date: new Date(date + "T" + time),
+      date: eventDate,
       description,
+      time,
     };
 
     onEventAdded(event);

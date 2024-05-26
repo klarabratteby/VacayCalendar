@@ -218,9 +218,8 @@ export default function Calendar() {
               }}
             >
               <div className={styles.eventContent}>
+                <div>{event.time}</div>
                 <div>{event.title}</div>
-                <div>{format(event.date, "yyyy-MM-dd")}</div>
-                <div>{event.description}</div>
               </div>
             </div>
           ))}

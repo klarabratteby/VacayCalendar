@@ -17,6 +17,7 @@ export interface EventData {
   title: string;
   date: Date;
   description: string;
+  time?: string;
 }
 
 export default function ReadEventForm({
@@ -28,7 +29,8 @@ export default function ReadEventForm({
 }: Props) {
   if (!eventData) return null;
 
-  const { title, date, description } = eventData;
+  const { title, date, description, time } = eventData;
+  const formattedTime = time ? format(date, "HH:mm") : null;
 
   const headerContent = (
     <div className={styles.eventButtonContainer}>
@@ -52,6 +54,12 @@ export default function ReadEventForm({
           <label htmlFor="date">Date</label>
           <div>{format(date, "yyyy-MM-dd")}</div>
         </div>
+        {time && ( // Conditionally render time if it exists
+          <div>
+            <label htmlFor="time">Time</label>
+            <div>{format(date, "HH:mm")}</div>
+          </div>
+        )}
         <div>
           <label htmlFor="description">Description</label>
           <div>{description}</div>
