@@ -3,13 +3,14 @@ import Form from "@/components/ui/form/form";
 import styles from "./event.module.css";
 import { Trash2, X, Edit } from "react-feather";
 import { format } from "date-fns";
+import EditEventForm from "./edit-event";
 
 interface Props {
   onClose: () => void;
   onDeleteEvent: () => void;
   position: { top: number; right: number };
   eventData?: EventData | null;
-  onEdit: () => void;
+  onEdit: (event: EventData) => void;
 }
 
 export interface EventData {
@@ -30,11 +31,25 @@ export default function ReadEventForm({
   if (!eventData) return null;
 
   const { title, date, description, time } = eventData;
-  const formattedTime = time ? format(date, "HH:mm") : null;
+  const [editMode, setEditMode] = useState(false);
+
+  const handleEdit = () => setEditMode(true);
+  const handleExitEdit = () => setEditMode(false);
+
+  if (editMode) {
+    return (
+      <EditEventForm
+        onClose={handleExitEdit}
+        onEdit={onEdit}
+        position={position}
+        event={eventData}
+      />
+    );
+  }
 
   const headerContent = (
     <div className={styles.eventButtonContainer}>
-      <Edit className={styles.iconButton} onClick={onEdit} />
+      <Edit className={styles.iconButton} onClick={handleEdit} />
       <Trash2 onClick={onDeleteEvent} className={styles.iconButton} />
       <X onClick={onClose} className={styles.iconButton} />
     </div>

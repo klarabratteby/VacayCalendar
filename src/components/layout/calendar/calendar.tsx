@@ -142,7 +142,24 @@ export default function Calendar() {
     }
   };
 
-  const handleEdit = async () => {};
+  const handleEdit = async (event: EventData) => {
+    if (selectedEventIndex !== null && uid) {
+      try {
+        // Update Firestore
+        await editCalendarEvent(uid, event, selectedEventIndex);
+
+        // Update Calendar UI
+        const updatedEvents = [...events];
+        updatedEvents[selectedEventIndex] = event;
+        setEvent(updatedEvents);
+
+        // Close the edit form
+        closeAddEventForm();
+      } catch (error) {
+        console.error("Error updating event:", error);
+      }
+    }
+  };
 
   const getHeader = () => {
     return (

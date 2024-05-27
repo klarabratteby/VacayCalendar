@@ -51,10 +51,16 @@ export const editCalendarEvent = async (
 ) => {
   const userRef = doc(db, "calendars", uid);
   try {
-    await updateDoc(userRef, {
-      [`events.${selectedIndex}`]: updatedEvent,
-    });
-    return updatedEvent;
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      if (data && data.events) {
+        const updatedEvents = [...data.events];
+        updatedEvents[selectedIndex] = updatedEvent;
+        await updateDoc(userRef, { events: updatedEvents });
+        return updatedEvent;
+      }
+    }
   } catch (error) {
     console.error("Error editing event:", error);
     throw error;
