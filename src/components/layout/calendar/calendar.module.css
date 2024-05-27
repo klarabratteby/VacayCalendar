@@ -58,11 +58,12 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   place-items: center;
+  margin-top: 0.5%;
 }
 
 .date {
-  height: 10.84vw;
-  width: 10.84vw;
+  height: 10.6vw;
+  width: 10.6vw;
   cursor: pointer;
   display: flex;
   align-items: flex-start;
