@@ -25,6 +25,8 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../lib/firebaseConfig";
 import ReadEventForm from "../../event/read-event";
+import Button from "@/components/ui/button/button";
+import { StyleRegistry } from "styled-jsx";
 
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -161,18 +163,35 @@ export default function Calendar() {
     }
   };
 
+  const handleAddVacay = () => {};
+
   const getHeader = () => {
     return (
-      <div className={styles.datepickerContainer}>
-        <AiOutlineLeft
-          onClick={() => setActiveDate(subMonths(activeDate, 1))}
-        />
-        <h2 className={styles.currentMonth}>
-          {format(activeDate, "MMMM yyyy")}
-        </h2>
-        <AiOutlineRight
-          onClick={() => setActiveDate(addMonths(activeDate, 1))}
-        />
+      <div className={styles.calendarHeader}>
+        <div className={styles.headerContent}>
+          <div className={styles.emptyContainer}>
+            <p></p>
+          </div>
+          <div className={styles.datepickerContainer}>
+            <AiOutlineLeft
+              onClick={() => setActiveDate(subMonths(activeDate, 1))}
+            />
+            <h2 className={styles.currentMonth}>
+              {format(activeDate, "MMMM yyyy")}
+            </h2>
+            <AiOutlineRight
+              onClick={() => setActiveDate(addMonths(activeDate, 1))}
+            />
+          </div>
+          <div className={styles.buttonContainer}>
+            <Button
+              text="Add Vacay"
+              backgroundColor="#031d44"
+              textColor="#fff"
+              onClick={handleAddVacay}
+            />
+          </div>
+        </div>
       </div>
     );
   };
@@ -280,8 +299,10 @@ export default function Calendar() {
   return (
     <div className={styles.calendarContainer}>
       {getHeader()}
-      {getWeekDaysNames()}
-      {getDates()}
+      <div className={styles.allWeeksContainer}>
+        {getWeekDaysNames()}
+        {getDates()}
+      </div>
       {isAddEventFormOpen && (
         <AddEventForm
           onClose={closeAddEventForm}

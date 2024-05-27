@@ -114,7 +114,12 @@ export default function AddEventForm({
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <Button text="Add Event" onClick={handleSubmit} />
+        <Button
+          text="Add Event"
+          backgroundColor=""
+          textColor=""
+          onClick={handleSubmit}
+        />
       </Form>
     </div>
   );
