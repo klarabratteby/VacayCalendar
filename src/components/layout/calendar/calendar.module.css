@@ -11,7 +11,7 @@
   box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.1);
 }
 .calendarHeader {
-  height: 7rem;
+  height: 5rem;
   justify-content: center;
   display: flex;
 }
@@ -58,7 +58,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   place-items: center;
-  margin-top: 0.5%;
+  padding-top: 0.6%;
 }
 
 .date {
@@ -113,7 +113,7 @@
 .eventContainer {
   background-color: rgb(234, 108, 230);
   height: 1.5vw;
-  width: 10.84vw;
+  width: 10.6vw;
   display: flex;
   flex-direction: row;
   position: absolute;
@@ -131,4 +131,8 @@
 
 .eventContent > div {
   margin-right: 0.2rem;
+}
+
+.vacationDay {
+  background-color: #dcf9e6;
 }

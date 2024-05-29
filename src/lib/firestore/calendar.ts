@@ -8,22 +8,40 @@ export const saveCalendarData = async (uid: string, events: EventData[]) => {
   await setDoc(userRef, { events }, { merge: true });
 };
 
+export const saveVacationData = async (
+  uid: string,
+  vacations: { startDate: Date; endDate: Date }[]
+) => {
+  const userRef = doc(db, "calendars", uid);
+  // Convert Date objects to Firestore Timestamps
+  const formattedVacations = vacations.map((vacation) => ({
+    startDate: vacation.startDate,
+    endDate: vacation.endDate,
+  }));
+  await setDoc(userRef, { vacations: formattedVacations }, { merge: true });
+};
+
 // Fetch calendar data for a user
 export const getCalendarData = async (uid: string) => {
   const userRef = doc(db, "calendars", uid);
   const userSnap = await getDoc(userRef);
   if (userSnap.exists()) {
     const data = userSnap.data();
-    if (data && data.events) {
-      // Convert Firestore Timestamps to Date objects
-      const events = data.events.map((event: any) => ({
-        ...event,
-        date: event.date.toDate(), // Convert Timestamp to Date
-      }));
-      return events;
+    if (data) {
+      const events =
+        data.events?.map((event: any) => ({
+          ...event,
+          date: event.date.toDate(), // Convert Firestore Timestamp to Date
+        })) || [];
+      const vacations =
+        data.vacations?.map((vacation: any) => ({
+          startDate: vacation.startDate.toDate(), // Convert Firestore Timestamp to Date
+          endDate: vacation.endDate.toDate(), // Convert Firestore Timestamp to Date
+        })) || [];
+      return { events, vacations };
     }
   }
-  return [];
+  return { events: [], vacations: [] };
 };
 
 export const deleteCalendarEvent = async (

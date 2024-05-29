@@ -18,6 +18,7 @@ import AddEventForm from "@/components/event/add-event";
 import { EventData } from "@/components/event/add-event";
 import {
   saveCalendarData,
+  saveVacationData,
   getCalendarData,
   deleteCalendarEvent,
   editCalendarEvent,
@@ -26,18 +27,22 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../lib/firebaseConfig";
 import ReadEventForm from "../../event/read-event";
 import Button from "@/components/ui/button/button";
-import { StyleRegistry } from "styled-jsx";
+import VacayForm from "@/components/event/add-vacay";
 
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeDate, setActiveDate] = useState<Date>(new Date());
   const [isAddEventFormOpen, setIsAddEventFormOpen] = useState(false);
   const [isOpenReadEventForm, setIsOpenReadEventForm] = useState(false);
+  const [isVacayFormOpen, setIsVacayFormOpen] = useState(false);
   const [addEventFormPosition, setAddEventFormPosition] = useState<{
     top: number;
     right: number;
   }>({ top: 0, right: 0 });
   const [events, setEvent] = useState<EventData[]>([]);
+  const [vacations, setVacations] = useState<
+    { startDate: Date; endDate: Date }[]
+  >([]);
   const [uid, setUid] = useState<string>("");
   const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(
     null
@@ -57,20 +62,20 @@ export default function Calendar() {
     const fetchData = async () => {
       if (!uid) return; // Ensure UID is available
       try {
-        // Update state with fetched event data
-        const eventData = await getCalendarData(uid);
-        if (eventData) {
-          setEvent(eventData);
+        const calendarData = await getCalendarData(uid);
+        if (calendarData) {
+          setEvent(calendarData.events || []);
+          setVacations(calendarData.vacations || []);
         }
       } catch (error) {
-        console.error("Error fetching event data:", error);
+        console.error("Error fetching calendar data:", error);
       }
     };
 
     fetchData();
   }, [uid]);
 
-  const openAddEventForm = (
+  const openForm = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     date: Date,
     eventIndex: number | null = null,
@@ -86,7 +91,7 @@ export default function Calendar() {
       ).getBoundingClientRect();
       const position = {
         top: cellRect.top - rect.top - cellRect.height + 40, // Position above the selected day
-        right: rect.width - cellRect.right + rect.left + 20, // Position to the left of the selected day, considering the width of the calendar
+        right: rect.width - cellRect.right + rect.left, // Position to the left of the selected day, considering the width of the calendar
       };
       setSelectedDate(date);
       setSelectedEventIndex(eventIndex);
@@ -114,9 +119,10 @@ export default function Calendar() {
     }
   };
 
-  const closeAddEventForm = () => {
+  const closeForm = () => {
     setIsAddEventFormOpen(false);
     setIsOpenReadEventForm(false);
+    setIsVacayFormOpen(false);
     setSelectedEventIndex(null);
   };
 
@@ -138,7 +144,7 @@ export default function Calendar() {
       console.log("Events after deletion:", afterRemove);
       setEvent(afterRemove);
       await deleteCalendarEvent(uid, selectedEventIndex);
-      closeAddEventForm();
+      closeForm();
     } catch (error) {
       console.error("Error handling event deletion:", error);
     }
@@ -156,14 +162,39 @@ export default function Calendar() {
         setEvent(updatedEvents);
 
         // Close the edit form
-        closeAddEventForm();
+        closeForm();
       } catch (error) {
         console.error("Error updating event:", error);
       }
     }
   };
 
-  const handleAddVacay = () => {};
+  const handleVacationData = async (vacation: {
+    startDate: Date;
+    endDate: Date;
+  }) => {
+    const updatedVacations = [...vacations, vacation];
+    setVacations(updatedVacations);
+    if (uid) {
+      await saveVacationData(uid, updatedVacations);
+    }
+  };
+
+  const handleAddVacay = () => {
+    console.log("handleAddVacay called");
+    const calendarContainer = document.querySelector(
+      `.${styles.calendarContainer}`
+    );
+    if (calendarContainer) {
+      const rect = calendarContainer.getBoundingClientRect();
+      const position = {
+        top: rect.top,
+        right: rect.left + 20,
+      };
+      setIsVacayFormOpen(true);
+      setAddEventFormPosition(position);
+    }
+  };
 
   const getHeader = () => {
     return (
@@ -186,8 +217,8 @@ export default function Calendar() {
           <div className={styles.buttonContainer}>
             <Button
               text="Add Vacay"
-              backgroundColor="#031d44"
-              textColor="#fff"
+              backgroundColor="#DCF9E6"
+              textColor="#0F574E"
               onClick={handleAddVacay}
             />
           </div>
@@ -230,6 +261,14 @@ export default function Calendar() {
       if (isSameDay(currentDate, new Date())) {
         classNames += " " + styles.today;
       }
+      vacations.forEach((vacation) => {
+        if (
+          currentDate >= vacation.startDate &&
+          currentDate <= vacation.endDate
+        ) {
+          classNames += " " + styles.vacationDay; // Add a new class for vacation days
+        }
+      });
       // ensure that the submitted form-data gets added to the right day
       const eventsForDay = events.filter((event) =>
         isSameDay(event.date, cloneDate)
@@ -239,7 +278,7 @@ export default function Calendar() {
           className={classNames}
           onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             setSelectedDate(cloneDate);
-            openAddEventForm(event, cloneDate, day, "add");
+            openForm(event, cloneDate, day, "add");
           }}
           key={day}
         >
@@ -250,7 +289,7 @@ export default function Calendar() {
               className={styles.eventContainer}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent triggering the outer div's onClick
-                openAddEventForm(e, cloneDate, index, "read");
+                openForm(e, cloneDate, index, "read");
               }}
             >
               <div className={styles.eventContent}>
@@ -305,18 +344,25 @@ export default function Calendar() {
       </div>
       {isAddEventFormOpen && (
         <AddEventForm
-          onClose={closeAddEventForm}
+          onClose={closeForm}
           onEventAdded={handleEventData}
           position={addEventFormPosition}
         />
       )}
       {isOpenReadEventForm && selectedEvent && (
         <ReadEventForm
-          onClose={closeAddEventForm}
+          onClose={closeForm}
           onDeleteEvent={handleDeleteEvent}
           position={addEventFormPosition}
           eventData={selectedEvent}
           onEdit={handleEdit}
+        />
+      )}
+      {isVacayFormOpen && (
+        <VacayForm
+          onClose={closeForm}
+          position={addEventFormPosition}
+          addedVacay={handleVacationData}
         />
       )}
     </div>
