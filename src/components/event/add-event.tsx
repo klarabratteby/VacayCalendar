@@ -22,7 +22,6 @@ export default function AddEventForm({
   onClose,
   onEventAdded,
   position,
-  //event = { title: "", date: new Date(), description: "", time: "" },
 }: Props) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");

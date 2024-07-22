@@ -61,15 +61,11 @@ export default function Calendar() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!uid) return; // Ensure UID is available
-      try {
-        const calendarData = await getCalendarData(uid);
-        if (calendarData) {
-          setEvent(calendarData.events || []);
-          setVacations(calendarData.vacations || []);
-        }
-      } catch (error) {
-        console.error("Error fetching calendar data:", error);
+      if (!uid) return;
+      const calendarData = await getCalendarData(uid);
+      if (calendarData) {
+        setEvent(calendarData.events || []);
+        setVacations(calendarData.vacations || []);
       }
     };
 
@@ -137,36 +133,25 @@ export default function Calendar() {
 
   const handleDeleteEvent = async () => {
     if (selectedEventIndex === null || !uid) return;
-    try {
-      console.log("Selected Event Index:", selectedEventIndex); // Log selected event index
-      console.log("Selected Event:", events[selectedEventIndex]);
-      const afterRemove = [...events];
-      afterRemove.splice(selectedEventIndex, 1);
-      console.log("Events after deletion:", afterRemove);
-      setEvent(afterRemove);
-      await deleteCalendarEvent(uid, selectedEventIndex);
-      closeForm();
-    } catch (error) {
-      console.error("Error handling event deletion:", error);
-    }
+    const afterRemove = [...events];
+    afterRemove.splice(selectedEventIndex, 1);
+    setEvent(afterRemove);
+    await deleteCalendarEvent(uid, selectedEventIndex);
+    closeForm();
   };
 
   const handleEdit = async (event: EventData) => {
     if (selectedEventIndex !== null && uid) {
-      try {
-        // Update Firestore
-        await editCalendarEvent(uid, event, selectedEventIndex);
+      // Update Firestore
+      await editCalendarEvent(uid, event, selectedEventIndex);
 
-        // Update Calendar UI
-        const updatedEvents = [...events];
-        updatedEvents[selectedEventIndex] = event;
-        setEvent(updatedEvents);
+      // Update Calendar UI
+      const updatedEvents = [...events];
+      updatedEvents[selectedEventIndex] = event;
+      setEvent(updatedEvents);
 
-        // Close the edit form
-        closeForm();
-      } catch (error) {
-        console.error("Error updating event:", error);
-      }
+      // Close the edit form
+      closeForm();
     }
   };
 
@@ -178,7 +163,6 @@ export default function Calendar() {
   };
 
   const handleAddVacay = () => {
-    console.log("handleAddVacay called");
     const calendarContainer = document.querySelector(
       `.${styles.calendarContainer}`
     );
