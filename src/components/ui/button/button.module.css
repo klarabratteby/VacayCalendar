@@ -3,7 +3,6 @@
   align-items: center;
   height: 1.7rem;
   justify-content: center;
-  background-color: rgba(3, 29, 68, 0.8);
   color: #fff;
   border: none;
   border-radius: 25rem;
@@ -14,7 +13,6 @@
 }
 
 .primButton:hover {
-  background-color: rgba(3, 29, 68, 0.6);
   transform: scale(1.01);
 }
 

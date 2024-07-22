@@ -80,15 +80,15 @@ export default function LoginForm() {
       <Button
         onClick={handleSignIn}
         text="Sign in"
-        backgroundColor=""
-        textColor=""
+        backgroundColor="#031D44"
+        textColor="fff"
       />
       <p> or </p>
       <Button
         onClick={handleGoogleAuth}
         text="Sign in with Google"
-        backgroundColor=""
-        textColor=""
+        backgroundColor="#031D44"
+        textColor="fff"
       />
     </Form>
   );

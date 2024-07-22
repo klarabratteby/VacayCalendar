@@ -62,6 +62,24 @@ export const deleteCalendarEvent = async (
   }
 };
 
+// Delete vacation data for a user
+export const deleteVacationData = async (
+  uid: string,
+  selectedVacationIndex: number
+) => {
+  const userRef = doc(db, "calendars", uid);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    const data = userSnap.data();
+    if (data && data.vacations) {
+      const vacationsAfterDelete = [...data.vacations];
+      vacationsAfterDelete.splice(selectedVacationIndex, 1);
+      await updateDoc(userRef, { vacations: vacationsAfterDelete });
+      return vacationsAfterDelete;
+    }
+  }
+};
+
 export const editCalendarEvent = async (
   uid: string,
   updatedEvent: EventData,

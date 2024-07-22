@@ -16,6 +16,7 @@ import {
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import AddEventForm from "@/components/event/add-event";
 import { EventData } from "@/components/event/add-event";
+import { VacayData } from "@/components/event/add-vacay";
 import {
   saveCalendarData,
   saveVacationData,
@@ -169,14 +170,10 @@ export default function Calendar() {
     }
   };
 
-  const handleVacationData = async (vacation: {
-    startDate: Date;
-    endDate: Date;
-  }) => {
-    const updatedVacations = [...vacations, vacation];
-    setVacations(updatedVacations);
+  const handleVacationData = async (vacation: VacayData[]) => {
+    setVacations(vacation);
     if (uid) {
-      await saveVacationData(uid, updatedVacations);
+      await saveVacationData(uid, vacation);
     }
   };
 
@@ -195,6 +192,8 @@ export default function Calendar() {
       setAddEventFormPosition(position);
     }
   };
+
+  const handleDeleteVacation = () => {};
 
   const getHeader = () => {
     return (
@@ -216,7 +215,7 @@ export default function Calendar() {
           </div>
           <div className={styles.buttonContainer}>
             <Button
-              text="Add Vacay"
+              text={vacations.length > 0 ? "Edit Vacay" : "Add Vacay"}
               backgroundColor="#DCF9E6"
               textColor="#0F574E"
               onClick={handleAddVacay}
@@ -363,6 +362,8 @@ export default function Calendar() {
           onClose={closeForm}
           position={addEventFormPosition}
           addedVacay={handleVacationData}
+          vacations={vacations}
+          onDeleteVacation={handleDeleteVacation}
         />
       )}
     </div>
