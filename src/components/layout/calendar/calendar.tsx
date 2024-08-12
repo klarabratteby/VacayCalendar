@@ -42,7 +42,7 @@ export default function Calendar() {
   }>({ top: 0, right: 0 });
   const [events, setEvent] = useState<EventData[]>([]);
   const [vacations, setVacations] = useState<
-    { startDate: Date; endDate: Date }[]
+    { title: string; startDate: Date; endDate: Date }[]
   >([]);
   const [uid, setUid] = useState<string>("");
   const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(

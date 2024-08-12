@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./event.module.css";
 import Form from "@/components/ui/form/form";
 import { X, PlusCircle } from "react-feather";
@@ -9,11 +9,12 @@ interface Props {
   onClose: () => void;
   position: { top: number; right: number };
   addedVacay: (vacation: VacayData[]) => void;
-  vacations: { startDate: Date; endDate: Date }[];
+  vacations: { title: string; startDate: Date; endDate: Date }[];
   onDeleteVacation: () => void;
 }
 
 export interface VacayData {
+  title: string;
   startDate: Date;
   endDate: Date;
 }
@@ -26,18 +27,58 @@ export default function VacayForm({
   onDeleteVacation,
 }: Props) {
   const [vacationForms, setVacationForms] = useState<
-    { startDate: string; endDate: string }[]
+    { title: string; startDate: string; endDate: string }[]
   >([
     {
+      title: "",
       startDate: new Date().toISOString().split("T")[0],
       endDate: new Date().toISOString().split("T")[0],
     },
   ]);
 
+  // Initialize form with existing vacations when the form is opened
+  useEffect(() => {
+    // Ensures that exsisting vacation dates are displayed in the right timezone
+    const formatDate = (date: Date) => date.toLocaleDateString("sv-SE");
+    if (vacations.length > 0) {
+      const formattedVacations = vacations.map(
+        ({ title, startDate, endDate }) => ({
+          title: title ?? "",
+          startDate: formatDate(new Date(startDate)),
+          endDate: formatDate(new Date(endDate)),
+        })
+      );
+      setVacationForms(formattedVacations);
+    } else {
+      const today = new Date();
+      setVacationForms([
+        {
+          title: "",
+          startDate: formatDate(today),
+          endDate: formatDate(today),
+        },
+      ]);
+    }
+  }, [vacations]);
+
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const setVacations: VacayData[] = vacationForms.map((form) => ({
+      title: form.title,
+      startDate: new Date(`${form.startDate}T00:00:00`),
+      endDate: new Date(`${form.endDate}T23:59:59`),
+    }));
+    await addedVacay(setVacations);
+    onClose();
+  };
+
   const handleAddVacationForm = () => {
     setVacationForms((prevForms) => [
       ...prevForms,
       {
+        title: "",
         startDate: new Date().toISOString().split("T")[0],
         endDate: new Date().toISOString().split("T")[0],
       },
@@ -49,27 +90,17 @@ export default function VacayForm({
     field: string,
     value: string
   ) => {
-    const updatedForms = vacationForms.map((form, i) =>
-      i === index ? { ...form, [field]: value } : form
-    );
-    setVacationForms(updatedForms);
+    setVacationForms((prevForms) => {
+      const updatedForms = prevForms.map((form, i) =>
+        i === index ? { ...form, [field]: value } : form
+      );
+      return updatedForms;
+    });
   };
 
   const handleRemoveVacationForm = (index: number) => {
     const updatedForms = vacationForms.filter((_, i) => i !== index);
     setVacationForms(updatedForms);
-  };
-
-  const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    const setVacations: VacayData[] = vacationForms.map((form) => ({
-      startDate: new Date(`${form.startDate}T00:00:00`),
-      endDate: new Date(`${form.endDate}T23:59:59`),
-    }));
-    await addedVacay(setVacations);
-    onClose();
   };
 
   const headerContent = (
@@ -90,6 +121,21 @@ export default function VacayForm({
       <Form header={headerContent}>
         {vacationForms.map((form, index) => (
           <div key={index} className={styles.vacationItem}>
+            <BsTrash
+              className={styles.trashIcon}
+              onClick={() => handleRemoveVacationForm(index)}
+            />
+            <div>
+              <label htmlFor={`title-${index}`}>Title</label>
+              <input
+                type="text"
+                id={`title-${index}`}
+                value={form.title}
+                onChange={(e) =>
+                  handleVacationChange(index, "title", e.target.value)
+                }
+              />
+            </div>
             <div>
               <label htmlFor={`startDate-${index}`}>Start Date</label>
               <input
@@ -112,7 +158,6 @@ export default function VacayForm({
                 }
               />
             </div>
-            <BsTrash onClick={() => handleRemoveVacationForm(index)} />
           </div>
         ))}
         <Button

@@ -23,3 +23,20 @@
 .vacationForm {
   position: absolute;
 }
+
+.vacationItem {
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  border: 0.01rem solid #ddd;
+  border-radius: 0.5rem;
+  position: relative; /* Positioning for trash icon */
+}
+
+.trashIcon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+  color: #ff0000;
+}

@@ -1,6 +1,7 @@
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { EventData } from "../../components/event/add-event";
+import { VacayData } from "@/components/event/add-vacay";
 
 // Save calendar data for a user
 export const saveCalendarData = async (uid: string, events: EventData[]) => {
@@ -10,11 +11,12 @@ export const saveCalendarData = async (uid: string, events: EventData[]) => {
 
 export const saveVacationData = async (
   uid: string,
-  vacations: { startDate: Date; endDate: Date }[]
+  vacations: { title: string; startDate: Date; endDate: Date }[]
 ) => {
   const userRef = doc(db, "calendars", uid);
   // Convert Date objects to Firestore Timestamps
   const formattedVacations = vacations.map((vacation) => ({
+    title: vacation.title,
     startDate: vacation.startDate,
     endDate: vacation.endDate,
   }));
