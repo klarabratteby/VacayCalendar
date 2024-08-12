@@ -65,8 +65,8 @@ export default function VacayForm({
   ) => {
     e.preventDefault();
     const setVacations: VacayData[] = vacationForms.map((form) => ({
-      startDate: new Date(form.startDate),
-      endDate: new Date(form.endDate),
+      startDate: new Date(`${form.startDate}T00:00:00`),
+      endDate: new Date(`${form.endDate}T23:59:59`),
     }));
     await addedVacay(setVacations);
     onClose();
