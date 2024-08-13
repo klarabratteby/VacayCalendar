@@ -1,0 +1,19 @@
+.menuContainer {
+  flex: 0 0 20%;
+  box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+  height: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.addFriendButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addFriendText {
+  font-weight: bold;
+}

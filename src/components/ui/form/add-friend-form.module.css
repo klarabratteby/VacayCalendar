@@ -1,0 +1,12 @@
+.headerContainer {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.closeButton {
+  cursor: pointer;
+}
+
+.input {
+  margin-bottom: 1rem;
+}

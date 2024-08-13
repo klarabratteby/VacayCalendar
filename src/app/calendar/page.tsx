@@ -1,15 +1,14 @@
-import React from 'react'
-import styles from './calendar.module.css'
-import Filter from '@/components/layout/filter/Filter'
-import CalendarDashboard from '@/components/layout/calendar-dashboard/calendar-dashboard'
+import React from "react";
+import styles from "./calendar.module.css";
+import CalendarDashboard from "@/components/layout/calendar-dashboard/calendar-dashboard";
+import SideMenu from "@/components/layout/side-menu/side-menu";
 
 export default function Calendar() {
   return (
     <main className={styles.pageContent}>
       <div className={styles.pageContentWrapper}>
-        <Filter />
+        <SideMenu />
         <CalendarDashboard />
-        
       </div>
     </main>
   );
