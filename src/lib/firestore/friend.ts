@@ -48,3 +48,27 @@ export const addFriendByEmail = async (uid: string, email: string) => {
     }
   }
 };
+
+// Retrieves current friends list
+export const getFriends = async (uid: string): Promise<string[]> => {
+  const userRef = doc(db, "users", uid);
+  const userSnap = await getDoc(userRef);
+
+  if (userSnap.exists()) {
+    const userData = userSnap.data();
+    const friendIds: string[] = userData.friends || [];
+
+    const friendEmails: string[] = [];
+    for (const friendId of friendIds) {
+      const friendRef = doc(db, "users", friendId);
+      const friendSnap = await getDoc(friendRef);
+
+      if (friendSnap.exists()) {
+        const friendData = friendSnap.data();
+        friendEmails.push(friendData.email);
+      }
+    }
+    return friendEmails;
+  }
+  return [];
+};

@@ -1,34 +1,54 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./side-menu.module.css";
 import { PlusCircle } from "react-feather";
 import AddFriendForm from "@/components/ui/form/add-friend-form";
-import { addFriendByEmail } from "@/lib/firestore/friend";
+import { addFriendByEmail, getFriends } from "@/lib/firestore/friend";
 import { auth } from "@/lib/firebaseConfig";
 
 export default function SideMenu() {
   const [showForm, setShowForm] = useState(false);
   const displayForm = () => setShowForm(!showForm);
   const [friends, setFriends] = useState<string[]>([]);
+  const [uid, setUid] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUid(user.uid);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      if (!uid) return;
+      const friendsList = await getFriends(uid);
+      setFriends(friendsList);
+    };
+
+    fetchFriends();
+  }, [uid]);
 
   const handleAddFriend = async (email: string) => {
     setShowForm(false);
 
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      const uid = currentUser.uid;
-      try {
-        await addFriendByEmail(uid, email);
-        setFriends((prevFriends) => [...prevFriends, email]);
-        console.log("Friend added");
-      } catch (error) {
-        console.error("Error adding friend", error);
-      }
+    if (uid) {
+      await addFriendByEmail(uid, email);
+      // Update the state only if the friend is not already in the list
+      setFriends((prevFriends) => {
+        if (!prevFriends.includes(email)) {
+          return [...prevFriends, email];
+        }
+        return prevFriends;
+      });
     }
   };
   const handleCloseForm = () => {
     setShowForm(false);
   };
+
   return (
     <div className={styles.menuContainer}>
       <div className={styles.addFriendButtonContainer}>
