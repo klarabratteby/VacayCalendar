@@ -9,4 +9,22 @@
   padding: 0.5rem;
   box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.1);
   height: 7rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.tabContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.tab {
+  border: none;
+  background-color: white;
+  border-bottom: 2px solid white;
+}
+
+.activeTab {
+  border-bottom: 2px solid black;
 }
