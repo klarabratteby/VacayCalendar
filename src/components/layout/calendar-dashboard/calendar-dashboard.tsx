@@ -1,14 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./calendar-dashboard.module.css";
 import Calendar from "@/components/layout/calendar/calendar";
 
-export default function CalendarDashboard() {
+interface Props {
+  friendId: string | null;
+}
+
+export default function CalendarDashboard({ friendId }: Props) {
   const [activeTab, setActiveTab] = useState("myCalendar"); // set default view to "My Calendar"
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
+
   return (
     <div className={styles.calendarDashboard}>
       <div className={styles.header}>
@@ -29,7 +34,14 @@ export default function CalendarDashboard() {
       </div>
 
       {activeTab === "myCalendar" && <Calendar />}
-      {activeTab === "friendsCalendar" && <Calendar />}
+      {activeTab === "friendsCalendar" && friendId && (
+        <Calendar friendId={friendId} />
+      )}
+      {activeTab === "friendsCalendar" && !friendId && (
+        <div className={styles.noSelectedFriendMessage}>
+          Select a friend in the side menu
+        </div>
+      )}
     </div>
   );
 }

@@ -23,6 +23,7 @@ import {
   getCalendarData,
   deleteCalendarEvent,
   editCalendarEvent,
+  getFriendCalendar,
 } from "@/lib/firestore/calendar";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../lib/firebaseConfig";
@@ -30,7 +31,11 @@ import ReadEventForm from "../../event/read-event";
 import Button from "@/components/ui/button/button";
 import VacayForm from "@/components/event/add-vacay";
 
-export default function Calendar() {
+interface Props {
+  friendId?: string;
+}
+
+export default function Calendar({ friendId }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeDate, setActiveDate] = useState<Date>(new Date());
   const [isAddEventFormOpen, setIsAddEventFormOpen] = useState(false);
@@ -61,16 +66,21 @@ export default function Calendar() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!uid) return;
-      const calendarData = await getCalendarData(uid);
-      if (calendarData) {
-        setEvent(calendarData.events || []);
-        setVacations(calendarData.vacations || []);
+      if (friendId) {
+        const { events, vacations } = await getFriendCalendar(friendId);
+        setEvent(events);
+        setVacations(vacations);
+      } else if (uid) {
+        const calendarData = await getCalendarData(uid);
+        if (calendarData) {
+          setEvent(calendarData.events || []);
+          setVacations(calendarData.vacations || []);
+        }
       }
     };
 
     fetchData();
-  }, [uid]);
+  }, [friendId, uid]);
 
   const openForm = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,

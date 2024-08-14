@@ -10,6 +10,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 
+// Allows a logged in user (uid) to add another user (friendId)
 export const addFriend = async (uid: string, friendId: string) => {
   const userRef = doc(db, "users", uid);
   await updateDoc(userRef, {
@@ -50,7 +51,9 @@ export const addFriendByEmail = async (uid: string, email: string) => {
 };
 
 // Retrieves current friends list
-export const getFriends = async (uid: string): Promise<string[]> => {
+export const getFriends = async (
+  uid: string
+): Promise<{ email: string; friendId: string }[]> => {
   const userRef = doc(db, "users", uid);
   const userSnap = await getDoc(userRef);
 
@@ -58,17 +61,17 @@ export const getFriends = async (uid: string): Promise<string[]> => {
     const userData = userSnap.data();
     const friendIds: string[] = userData.friends || [];
 
-    const friendEmails: string[] = [];
+    const friends: { email: string; friendId: string }[] = [];
     for (const friendId of friendIds) {
       const friendRef = doc(db, "users", friendId);
       const friendSnap = await getDoc(friendRef);
 
       if (friendSnap.exists()) {
         const friendData = friendSnap.data();
-        friendEmails.push(friendData.email);
+        friends.push({ email: friendData.email, friendId });
       }
     }
-    return friendEmails;
+    return friends; // email and friendId
   }
   return [];
 };

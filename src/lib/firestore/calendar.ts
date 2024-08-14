@@ -104,3 +104,27 @@ export const editCalendarEvent = async (
     throw error;
   }
 };
+
+// Fetch calendar data for a friend using friendId
+export const getFriendCalendar = async (friendId: string) => {
+  const calendarRef = doc(db, "calendars", friendId);
+  const calendarSnap = await getDoc(calendarRef);
+
+  if (calendarSnap.exists()) {
+    const data = calendarSnap.data();
+    if (data) {
+      const events =
+        data.events?.map((event: any) => ({
+          ...event,
+          date: event.date.toDate(), // Convert Firestore Timestamp to Date
+        })) || [];
+      const vacations =
+        data.vacations?.map((vacation: any) => ({
+          startDate: vacation.startDate.toDate(), // Convert Firestore Timestamp to Date
+          endDate: vacation.endDate.toDate(), // Convert Firestore Timestamp to Date
+        })) || [];
+      return { events, vacations };
+    }
+  }
+  return { events: [], vacations: [] };
+};

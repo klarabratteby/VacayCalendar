@@ -6,10 +6,16 @@ import AddFriendForm from "@/components/ui/form/add-friend-form";
 import { addFriendByEmail, getFriends } from "@/lib/firestore/friend";
 import { auth } from "@/lib/firebaseConfig";
 
-export default function SideMenu() {
+interface Props {
+  onFriendSelect: (friendId: string) => void;
+}
+
+export default function SideMenu({ onFriendSelect }: Props) {
   const [showForm, setShowForm] = useState(false);
   const displayForm = () => setShowForm(!showForm);
-  const [friends, setFriends] = useState<string[]>([]);
+  const [friends, setFriends] = useState<{ email: string; friendId: string }[]>(
+    []
+  );
   const [uid, setUid] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,6 +27,7 @@ export default function SideMenu() {
     return unsubscribe;
   }, []);
 
+  // Fetches the logged in users list of friends
   useEffect(() => {
     const fetchFriends = async () => {
       if (!uid) return;
@@ -38,13 +45,18 @@ export default function SideMenu() {
       await addFriendByEmail(uid, email);
       // Update the state only if the friend is not already in the list
       setFriends((prevFriends) => {
-        if (!prevFriends.includes(email)) {
-          return [...prevFriends, email];
+        if (!prevFriends.some((friend) => friend.email === email)) {
+          return [...prevFriends, { email, friendId: "" }]; // Adding email with an empty friendId temporarily
         }
         return prevFriends;
       });
     }
   };
+
+  const handleFriendClick = (friendId: string) => {
+    onFriendSelect(friendId); // Triggers Calendar component when a friend is selected
+  };
+
   const handleCloseForm = () => {
     setShowForm(false);
   };
@@ -63,8 +75,12 @@ export default function SideMenu() {
       )}
       <div className={styles.friendsList}>
         {friends.map((friend, index) => (
-          <div key={index} className={styles.friendItem}>
-            <span>{friend}</span>
+          <div
+            key={index}
+            className={styles.friendItem}
+            onClick={() => handleFriendClick(friend.friendId)}
+          >
+            <span>{friend.email}</span>
           </div>
         ))}
       </div>
