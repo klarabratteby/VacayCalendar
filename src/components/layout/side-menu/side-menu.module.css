@@ -4,16 +4,29 @@
   height: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
 }
 
 .addFriendButtonContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
 }
 
 .addFriendText {
   font-weight: bold;
+}
+
+.friendListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.friendsList {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
 }

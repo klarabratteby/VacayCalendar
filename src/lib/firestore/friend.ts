@@ -8,6 +8,7 @@ import {
   query,
   where,
   getDoc,
+  arrayRemove,
 } from "firebase/firestore";
 
 // Allows a logged in user (uid) to add another user (friendId)
@@ -53,7 +54,7 @@ export const addFriendByEmail = async (uid: string, email: string) => {
 // Retrieves current friends list
 export const getFriends = async (
   uid: string
-): Promise<{ email: string; friendId: string }[]> => {
+): Promise<{ username: string; email: string; friendId: string }[]> => {
   const userRef = doc(db, "users", uid);
   const userSnap = await getDoc(userRef);
 
@@ -61,17 +62,35 @@ export const getFriends = async (
     const userData = userSnap.data();
     const friendIds: string[] = userData.friends || [];
 
-    const friends: { email: string; friendId: string }[] = [];
+    const friends: { username: string; email: string; friendId: string }[] = [];
     for (const friendId of friendIds) {
       const friendRef = doc(db, "users", friendId);
       const friendSnap = await getDoc(friendRef);
 
       if (friendSnap.exists()) {
         const friendData = friendSnap.data();
-        friends.push({ email: friendData.email, friendId });
+        friends.push({
+          username: friendData.username,
+          email: friendData.email,
+          friendId,
+        });
       }
     }
     return friends; // email and friendId
   }
   return [];
+};
+
+// Remove friend
+export const removeFriend = async (uid: string, friendId: string) => {
+  const userRef = doc(db, "users", uid);
+  await updateDoc(userRef, {
+    friends: arrayRemove(friendId), // Remove the friendId from the friends array
+  });
+
+  // Optionally, remove the user from the friend's list as well
+  const friendRef = doc(db, "users", friendId);
+  await updateDoc(friendRef, {
+    friends: arrayRemove(uid),
+  });
 };

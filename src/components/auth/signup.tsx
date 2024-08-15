@@ -11,14 +11,15 @@ import { saveUserData } from "@/lib/firestore/user";
 export default function SignUpForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSignUp = async (e: any) => {
     e.preventDefault();
     try {
-      if (!email || !password) {
-        setError("Please enter both email and password");
+      if (!email || !password || !username) {
+        setError("Please enter username, email and password");
         return;
       }
       const userCredential = await createUserWithEmailAndPassword(
@@ -32,7 +33,7 @@ export default function SignUpForm() {
         return;
       }
       const userEmail = userCredential.user?.email ?? "";
-      await saveUserData(uid, { email: userEmail });
+      await saveUserData(uid, { email: userEmail, username });
       router.push("/login");
     } catch (error: any) {
       setError(error.message);
@@ -42,6 +43,16 @@ export default function SignUpForm() {
 
   return (
     <Form>
+      <div>
+        <label htmlFor="username">Name</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
       <div>
         <label htmlFor="email">Email</label>
         <input

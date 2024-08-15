@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "../../lib/firebaseConfig";
 import Link from "next/link";
 import Form from "@/components/ui/form/form";
-import { saveUserData } from "../../lib/firestore/user";
+import { getUserData, saveUserData } from "../../lib/firestore/user";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -43,8 +43,22 @@ export default function LoginForm() {
       const uid = userCredential.user.uid;
       // Extract user's email and handle null case
       const email = userCredential.user.email || "";
-      // Save user data to Firestore
-      await saveUserData(uid, { email });
+
+      const existingUserData = await getUserData(uid);
+
+      if (!existingUserData?.username) {
+        // Prompt for username if it doesn't exist
+        let username = "";
+        while (!username) {
+          username = prompt("Please enter a username:") || "";
+          if (username) {
+            // Save user data to Firestore
+            await saveUserData(uid, { email, username });
+          } else {
+            alert("Username is required to continue.");
+          }
+        }
+      }
       router.push("/calendar");
     } catch (error) {
       console.log(error);

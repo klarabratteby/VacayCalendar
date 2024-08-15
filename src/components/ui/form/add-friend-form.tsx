@@ -22,20 +22,22 @@ export default function AddFriendForm({ onAddFriend, onClose }: Props) {
     </div>
   );
   return (
-    <Form header={headerContent}>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter friend's email"
-        className={styles.input}
-      />
-      <Button
-        text="Submit"
-        backgroundColor="#031D44"
-        textColor="fff"
-        onClick={handleSubmit}
-      />
-    </Form>
+    <div className={styles.addFriendContainer}>
+      <Form header={headerContent}>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter friend's email"
+          className={styles.input}
+        />
+        <Button
+          text="Submit"
+          backgroundColor="#031D44"
+          textColor="fff"
+          onClick={handleSubmit}
+        />
+      </Form>
+    </div>
   );
 }

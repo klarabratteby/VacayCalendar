@@ -5,8 +5,16 @@
 
 .closeButton {
   cursor: pointer;
+  width: 1rem;
+  height: 1rem;
 }
 
 .input {
   margin-bottom: 1rem;
+  width: 100%;
+}
+
+.addFriendContainer {
+  max-width: 250px;
+  margin: 0 auto;
 }

@@ -3,7 +3,7 @@ import styles from "./event.module.css";
 import Form from "@/components/ui/form/form";
 import { X, PlusCircle } from "react-feather";
 import Button from "@/components/ui/button/button";
-import { BsTrash } from "react-icons/bs";
+import { Trash2 } from "react-feather";
 
 interface Props {
   onClose: () => void;
@@ -121,7 +121,7 @@ export default function VacayForm({
       <Form header={headerContent}>
         {vacationForms.map((form, index) => (
           <div key={index} className={styles.vacationItem}>
-            <BsTrash
+            <Trash2
               className={styles.trashIcon}
               onClick={() => handleRemoveVacationForm(index)}
             />

@@ -1,0 +1,44 @@
+.friendButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.friendButton {
+  display: flex;
+  align-items: center;
+  background-color: #031d44;
+  justify-content: space-between;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.7rem 1rem;
+  width: 100%;
+  max-width: 200px;
+  transition:
+    transform 0.3s,
+    background-color 0.3s;
+  white-space: nowrap;
+}
+.friendButton:hover {
+  background-color: rgba(3, 29, 68, 0.6);
+}
+.trashIcon {
+  height: 1rem;
+  width: 1rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+@media (max-width: 1000px) {
+  .trashIcon {
+    display: none;
+  }
+}
+
+.trashIcon:hover {
+  color: #ff0000;
+}
+
+.primButton:disabled {
+  background-color: #c0c0c0;
+  cursor: not-allowed;
+}
