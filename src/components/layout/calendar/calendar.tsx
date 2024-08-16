@@ -54,7 +54,6 @@ export default function Calendar({ friendId }: Props) {
     null
   ); // holds index of the currently selected event
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null); // holds the data of the selected event
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -136,36 +135,48 @@ export default function Calendar({ friendId }: Props) {
   const handleEventData = async (event: EventData) => {
     const updatedEvents: EventData[] = [...events, event];
     setEvent(updatedEvents);
-    const id = friendId || uid;
-    if (id) {
-      await saveCalendarData(id, updatedEvents); // Save all events after adding the new one
+
+    if (friendId && uid) {
+      await saveCalendarData(friendId, updatedEvents); // Save the event to the friends calendar
+      const myCalendarData = await getCalendarData(uid);
+      const myUpdatedEvents: EventData[] = [
+        ...(myCalendarData?.events || []),
+        event,
+      ];
+      await saveCalendarData(uid, myUpdatedEvents);
+    } else if (uid) {
+      await saveCalendarData(uid, updatedEvents);
     }
   };
 
   const handleDeleteEvent = async () => {
-    if (selectedEventIndex === null) return;
-    const id = friendId || uid;
-    if (id) {
-      const afterRemove = [...events];
-      afterRemove.splice(selectedEventIndex, 1);
-      setEvent(afterRemove);
-      await deleteCalendarEvent(id, selectedEventIndex);
+    const user = auth.currentUser;
+    if (user && selectedEvent?.id) {
+      // Delete the event from Firestore
+      await deleteCalendarEvent(selectedEvent.id);
+
+      // Update the local state
+      const updatedEvents = events.filter(
+        (event) => event.id !== selectedEvent.id
+      );
+      setEvent(updatedEvents);
       closeForm();
     }
   };
 
-  const handleEdit = async (event: EventData) => {
-    if (selectedEventIndex !== null) {
-      const id = friendId || uid;
-      // Update Firestore
-      await editCalendarEvent(id, event, selectedEventIndex);
+  const handleEdit = async (updatedEvent: EventData) => {
+    const user = auth.currentUser;
+    if (user && selectedEvent?.id) {
+      // Update the event in Firestore
+      await editCalendarEvent(updatedEvent);
 
-      // Update Calendar UI
-      const updatedEvents = [...events];
-      updatedEvents[selectedEventIndex] = event;
-      setEvent(updatedEvents);
+      // Update the local state
+      setEvent((prev) =>
+        prev.map((event) =>
+          event.id === updatedEvent.id ? updatedEvent : event
+        )
+      );
 
-      // Close the edit form
       closeForm();
     }
   };
@@ -212,12 +223,14 @@ export default function Calendar({ friendId }: Props) {
             />
           </div>
           <div className={styles.buttonContainer}>
-            <Button
-              text={vacations.length > 0 ? "Edit Vacay" : "Add Vacay"}
-              backgroundColor="#DCF9E6"
-              textColor="#0F574E"
-              onClick={handleAddVacay}
-            />
+            {!friendId && (
+              <Button
+                text={vacations.length > 0 ? "Edit Vacay" : "Add Vacay"}
+                backgroundColor="#DCF9E6"
+                textColor="#0F574E"
+                onClick={handleAddVacay}
+              />
+            )}
           </div>
         </div>
       </div>

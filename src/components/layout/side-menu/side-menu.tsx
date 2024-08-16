@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styles from "./side-menu.module.css";
-import { PlusCircle } from "react-feather";
+import { PlusCircle, Settings } from "react-feather";
 import AddFriendForm from "@/components/ui/form/add-friend-form";
 import { addFriendByEmail, getFriends } from "@/lib/firestore/friend";
 import { auth } from "@/lib/firebaseConfig";
@@ -106,6 +106,10 @@ export default function SideMenu({ onFriendSelect }: Props) {
             />
           ))}
         </div>
+      </div>
+      <div className={styles.userSettingsContainer}>
+        <Settings />
+        <h1 className={styles.addFriendText}>SETTINGS</h1>
       </div>
     </div>
   );

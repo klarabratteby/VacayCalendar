@@ -12,6 +12,7 @@ interface Props {
 }
 
 export interface EventData {
+  id?: string;
   title: string;
   date: Date;
   description: string;

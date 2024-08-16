@@ -1,30 +1,42 @@
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { EventData } from "../../components/event/add-event";
 
 // Save calendar data for a user
-export const saveCalendarData = async (
-  uid: string,
-  events: EventData[],
-  isFriend: boolean = false
-) => {
+export const saveCalendarData = async (uid: string, events: EventData[]) => {
   const userRef = doc(db, "calendars", uid);
-  await setDoc(userRef, { events }, { merge: true });
+  const eventsWithIds = await Promise.all(
+    events.map(async (event) => {
+      if (!event.id) {
+        const eventDocRef = doc(collection(db, "calendars", uid, "events"));
+        event.id = eventDocRef.id;
+      }
+      return event;
+    })
+  );
+  await setDoc(userRef, { events: eventsWithIds }, { merge: true });
 };
 
 export const saveVacationData = async (
   uid: string,
-  vacations: { title: string; startDate: Date; endDate: Date }[],
-  isFriend: boolean = false
+  vacations: { id?: string; title: string; startDate: Date; endDate: Date }[]
 ) => {
   const userRef = doc(db, "calendars", uid);
-  // Convert Date objects to Firestore Timestamps
-  const formattedVacations = vacations.map((vacation) => ({
-    title: vacation.title,
-    startDate: vacation.startDate,
-    endDate: vacation.endDate,
-  }));
-  await setDoc(userRef, { vacations: formattedVacations }, { merge: true });
+  const vacationsWithIds = vacations.map((vacation) => {
+    if (!vacation.id) {
+      vacation.id = doc(collection(db, "calendars", uid, "vacations")).id;
+    }
+    return vacation;
+  });
+  await setDoc(userRef, { vacations: vacationsWithIds }, { merge: true });
 };
 
 // Fetch calendar data for a user
@@ -50,44 +62,58 @@ export const getCalendarData = async (uid: string) => {
   return { events: [], vacations: [] };
 };
 
-export const deleteCalendarEvent = async (
-  uid: string,
-  selectedEventIndex: number
-) => {
-  const userRef = doc(db, "calendars", uid);
-  const userSnap = await getDoc(userRef);
-  if (userSnap.exists()) {
-    const data = userSnap.data();
-    if (data && data.events) {
-      // Filter out the selected event based on index
-      const eventsAfterDelete = [...data.events];
-      eventsAfterDelete.splice(selectedEventIndex, 1);
-      await updateDoc(userRef, { events: eventsAfterDelete });
-      return eventsAfterDelete;
+export const deleteCalendarEvent = async (eventId: string) => {
+  // Fetch all calendars
+  const calendarsCollectionRef = collection(db, "calendars");
+  const calendarsSnap = await getDocs(calendarsCollectionRef);
+
+  // Iterate over all calendar documents
+  for (const calendarDoc of calendarsSnap.docs) {
+    const calendarId = calendarDoc.id;
+    const userRef = doc(db, "calendars", calendarId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      if (data && data.events) {
+        // Only keep events that isnt math the eventId
+        const eventsAfterDelete = data.events.filter(
+          (event: EventData) => event.id !== eventId
+        );
+
+        await updateDoc(userRef, { events: eventsAfterDelete });
+      }
+      await deleteDoc(doc(db, "calendars", calendarId, "events", eventId));
     }
   }
 };
 
-export const editCalendarEvent = async (
-  uid: string,
-  updatedEvent: EventData,
-  selectedIndex: number
-) => {
-  const userRef = doc(db, "calendars", uid);
-  try {
+export const editCalendarEvent = async (updatedEvent: EventData) => {
+  if (!updatedEvent.id) {
+    throw new Error("Event ID is required for editing");
+  }
+
+  // Fetch all calendars
+  const calendarsCollectionRef = collection(db, "calendars");
+  const calendarsSnap = await getDocs(calendarsCollectionRef);
+
+  // Iterate over all calendar documents
+  for (const calendarDoc of calendarsSnap.docs) {
+    const calendarId = calendarDoc.id;
+    const userRef = doc(db, "calendars", calendarId);
     const userSnap = await getDoc(userRef);
+
     if (userSnap.exists()) {
       const data = userSnap.data();
       if (data && data.events) {
-        const updatedEvents = [...data.events];
-        updatedEvents[selectedIndex] = updatedEvent;
+        // Only update events that match event id
+        const updatedEvents = data.events.map((event: EventData) =>
+          event.id === updatedEvent.id ? updatedEvent : event
+        );
+
         await updateDoc(userRef, { events: updatedEvents });
-        return updatedEvent;
       }
     }
-  } catch (error) {
-    console.error("Error editing event:", error);
-    throw error;
   }
 };
 

@@ -10,10 +10,10 @@ interface Props {
   position: { top: number; right: number };
   addedVacay: (vacation: VacayData[]) => void;
   vacations: { title: string; startDate: Date; endDate: Date }[];
-  //onDeleteVacation: () => void;
 }
 
 export interface VacayData {
+  id?: string;
   title: string;
   startDate: Date;
   endDate: Date;
