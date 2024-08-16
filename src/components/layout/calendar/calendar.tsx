@@ -136,24 +136,29 @@ export default function Calendar({ friendId }: Props) {
   const handleEventData = async (event: EventData) => {
     const updatedEvents: EventData[] = [...events, event];
     setEvent(updatedEvents);
-    if (uid) {
-      await saveCalendarData(uid, updatedEvents); // Save all events after adding the new one
+    const id = friendId || uid;
+    if (id) {
+      await saveCalendarData(id, updatedEvents); // Save all events after adding the new one
     }
   };
 
   const handleDeleteEvent = async () => {
-    if (selectedEventIndex === null || !uid) return;
-    const afterRemove = [...events];
-    afterRemove.splice(selectedEventIndex, 1);
-    setEvent(afterRemove);
-    await deleteCalendarEvent(uid, selectedEventIndex);
-    closeForm();
+    if (selectedEventIndex === null) return;
+    const id = friendId || uid;
+    if (id) {
+      const afterRemove = [...events];
+      afterRemove.splice(selectedEventIndex, 1);
+      setEvent(afterRemove);
+      await deleteCalendarEvent(id, selectedEventIndex);
+      closeForm();
+    }
   };
 
   const handleEdit = async (event: EventData) => {
-    if (selectedEventIndex !== null && uid) {
+    if (selectedEventIndex !== null) {
+      const id = friendId || uid;
       // Update Firestore
-      await editCalendarEvent(uid, event, selectedEventIndex);
+      await editCalendarEvent(id, event, selectedEventIndex);
 
       // Update Calendar UI
       const updatedEvents = [...events];
@@ -167,8 +172,9 @@ export default function Calendar({ friendId }: Props) {
 
   const handleVacationData = async (vacation: VacayData[]) => {
     setVacations(vacation);
-    if (uid) {
-      await saveVacationData(uid, vacation);
+    const id = friendId || uid;
+    if (id) {
+      await saveVacationData(id, vacation);
     }
   };
 
@@ -186,8 +192,6 @@ export default function Calendar({ friendId }: Props) {
       setAddEventFormPosition(position);
     }
   };
-
-  const handleDeleteVacation = () => {};
 
   const getHeader = () => {
     return (
@@ -357,7 +361,6 @@ export default function Calendar({ friendId }: Props) {
           position={addEventFormPosition}
           addedVacay={handleVacationData}
           vacations={vacations}
-          onDeleteVacation={handleDeleteVacation}
         />
       )}
     </div>

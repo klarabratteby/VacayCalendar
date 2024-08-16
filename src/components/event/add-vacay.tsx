@@ -10,7 +10,7 @@ interface Props {
   position: { top: number; right: number };
   addedVacay: (vacation: VacayData[]) => void;
   vacations: { title: string; startDate: Date; endDate: Date }[];
-  onDeleteVacation: () => void;
+  //onDeleteVacation: () => void;
 }
 
 export interface VacayData {
@@ -24,7 +24,6 @@ export default function VacayForm({
   position,
   addedVacay,
   vacations,
-  onDeleteVacation,
 }: Props) {
   const [vacationForms, setVacationForms] = useState<
     { title: string; startDate: string; endDate: string }[]

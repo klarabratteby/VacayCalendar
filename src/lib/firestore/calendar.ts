@@ -1,17 +1,21 @@
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { EventData } from "../../components/event/add-event";
-import { VacayData } from "@/components/event/add-vacay";
 
 // Save calendar data for a user
-export const saveCalendarData = async (uid: string, events: EventData[]) => {
+export const saveCalendarData = async (
+  uid: string,
+  events: EventData[],
+  isFriend: boolean = false
+) => {
   const userRef = doc(db, "calendars", uid);
   await setDoc(userRef, { events }, { merge: true });
 };
 
 export const saveVacationData = async (
   uid: string,
-  vacations: { title: string; startDate: Date; endDate: Date }[]
+  vacations: { title: string; startDate: Date; endDate: Date }[],
+  isFriend: boolean = false
 ) => {
   const userRef = doc(db, "calendars", uid);
   // Convert Date objects to Firestore Timestamps
@@ -60,24 +64,6 @@ export const deleteCalendarEvent = async (
       eventsAfterDelete.splice(selectedEventIndex, 1);
       await updateDoc(userRef, { events: eventsAfterDelete });
       return eventsAfterDelete;
-    }
-  }
-};
-
-// Delete vacation data for a user
-export const deleteVacationData = async (
-  uid: string,
-  selectedVacationIndex: number
-) => {
-  const userRef = doc(db, "calendars", uid);
-  const userSnap = await getDoc(userRef);
-  if (userSnap.exists()) {
-    const data = userSnap.data();
-    if (data && data.vacations) {
-      const vacationsAfterDelete = [...data.vacations];
-      vacationsAfterDelete.splice(selectedVacationIndex, 1);
-      await updateDoc(userRef, { vacations: vacationsAfterDelete });
-      return vacationsAfterDelete;
     }
   }
 };
