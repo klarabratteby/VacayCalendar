@@ -7,6 +7,7 @@ import { addFriendByEmail, getFriends } from "@/lib/firestore/friend";
 import { auth } from "@/lib/firebaseConfig";
 import FriendButton from "@/components/ui/button/friendbutton";
 import { removeFriend } from "@/lib/firestore/friend";
+import { getUserData } from "@/lib/firestore/user";
 interface Props {
   onFriendSelect: (friendId: string) => void;
 }
@@ -18,11 +19,19 @@ export default function SideMenu({ onFriendSelect }: Props) {
     { username: string; email: string; friendId: string }[]
   >([]);
   const [uid, setUid] = useState<string | null>(null);
+  const [username, setUsername] = useState<string>("");
+  const [profilePicture, setProfilePicture] =
+    useState<string>("/user-admin.svg");
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUid(user.uid);
+        const userData = await getUserData(user.uid);
+        if (userData) {
+          setUsername(userData.username || "");
+          setProfilePicture(userData.profilePicture || "/user-admin.svg");
+        }
       }
     });
     return unsubscribe;
@@ -68,6 +77,14 @@ export default function SideMenu({ onFriendSelect }: Props) {
 
   return (
     <div className={styles.menuContainer}>
+      <div className={styles.profilePictureContainer}>
+        <img
+          src={profilePicture}
+          alt="Profile"
+          className={styles.profilePicture}
+        />
+        <h1 className={styles.username}>{username}</h1>
+      </div>
       <div className={styles.friendListContainer}>
         <div className={styles.addFriendButtonContainer}>
           <h1 className={styles.addFriendText}>FRIENDS</h1>

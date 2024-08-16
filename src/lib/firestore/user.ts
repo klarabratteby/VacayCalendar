@@ -4,6 +4,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 export interface UserData {
   email: string;
   username: string;
+  profilePicture?: string;
 }
 
 // Create or update a users data
