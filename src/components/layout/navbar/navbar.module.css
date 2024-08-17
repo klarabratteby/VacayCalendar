@@ -12,13 +12,13 @@
   flex-direction: row;
   padding: 0.9rem 1.2rem;
   justify-content: space-between;
-  gap: 1rem; /* Add gap between items */
+  gap: 1rem;
 }
 
 .iconButton {
   background-color: transparent;
   border: none;
-  color: rgb(204, 192, 239);
+  color: #f75590;
   margin-right: 1.5rem;
   margin-left: 1.5rem;
 }
