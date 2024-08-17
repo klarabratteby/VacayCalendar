@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
   position: { top: number; right: number };
   addedVacay: (vacation: VacayData[]) => void;
-  vacations: { title: string; startDate: Date; endDate: Date }[];
+  vacations: VacayData[];
 }
 
 export interface VacayData {

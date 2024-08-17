@@ -20,10 +20,9 @@ import { VacayData } from "@/components/event/add-vacay";
 import {
   saveCalendarData,
   saveVacationData,
-  getCalendarData,
   deleteCalendarEvent,
   editCalendarEvent,
-  getFriendCalendar,
+  listenToCalendarData,
 } from "@/lib/firestore/calendar";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../lib/firebaseConfig";
@@ -45,7 +44,7 @@ export default function Calendar({ friendId }: Props) {
     top: number;
     right: number;
   }>({ top: 0, right: 0 });
-  const [events, setEvent] = useState<EventData[]>([]);
+  const [events, setEvents] = useState<EventData[]>([]);
   const [vacations, setVacations] = useState<
     { title: string; startDate: Date; endDate: Date }[]
   >([]);
@@ -61,21 +60,15 @@ export default function Calendar({ friendId }: Props) {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (friendId) {
-        const { events, vacations } = await getFriendCalendar(friendId);
-        setEvent(events);
-        setVacations(vacations);
-      } else if (uid) {
-        const calendarData = await getCalendarData(uid);
-        if (calendarData) {
-          setEvent(calendarData.events || []);
-          setVacations(calendarData.vacations || []);
-        }
-      }
-    };
-
-    fetchData();
+    const id = friendId || uid;
+    if (id) {
+      // Listen to real-time updates for the user's or friend's calendar
+      const unsubscribe = listenToCalendarData(id, (data) => {
+        setEvents(data.events);
+        setVacations(data.vacations);
+      });
+      return () => unsubscribe();
+    }
   }, [friendId, uid]);
 
   // Function that dtermoines if user has clicked on an empty date or an event
@@ -122,16 +115,10 @@ export default function Calendar({ friendId }: Props) {
 
   const handleEventData = async (event: EventData) => {
     const updatedEvents: EventData[] = [...events, event];
-    setEvent(updatedEvents);
-
+    // If event added on a friends calendar => save on both
     if (friendId && uid) {
-      await saveCalendarData(friendId, updatedEvents); // Save the event to the friends calendar
-      const myCalendarData = await getCalendarData(uid);
-      const myUpdatedEvents: EventData[] = [
-        ...(myCalendarData?.events || []),
-        event,
-      ];
-      await saveCalendarData(uid, myUpdatedEvents);
+      await saveCalendarData(friendId, updatedEvents);
+      await saveCalendarData(uid, updatedEvents);
     } else if (uid) {
       await saveCalendarData(uid, updatedEvents);
     }
@@ -142,12 +129,6 @@ export default function Calendar({ friendId }: Props) {
     if (user && selectedEvent?.id) {
       // Delete the event from Firestore
       await deleteCalendarEvent(selectedEvent.id);
-
-      // Update the local state
-      const updatedEvents = events.filter(
-        (event) => event.id !== selectedEvent.id
-      );
-      setEvent(updatedEvents);
       closeForm();
     }
   };
@@ -157,20 +138,11 @@ export default function Calendar({ friendId }: Props) {
     if (user && selectedEvent?.id) {
       // Update the event in Firestore
       await editCalendarEvent(updatedEvent);
-
-      // Update the local state
-      setEvent((prev) =>
-        prev.map((event) =>
-          event.id === updatedEvent.id ? updatedEvent : event
-        )
-      );
-
       closeForm();
     }
   };
 
   const handleVacationData = async (vacation: VacayData[]) => {
-    setVacations(vacation);
     const id = friendId || uid;
     if (id) {
       await saveVacationData(id, vacation);

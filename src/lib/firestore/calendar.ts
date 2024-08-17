@@ -6,9 +6,17 @@ import {
   doc,
   setDoc,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { EventData } from "../../components/event/add-event";
+import { VacayData } from "../../components/event/add-vacay";
+
+interface CalendarData {
+  events: EventData[];
+  vacations: VacayData[];
+}
+type CalendarDataCallback = (data: CalendarData) => void;
 
 // Save calendar data for a user
 export const saveCalendarData = async (uid: string, events: EventData[]) => {
@@ -25,10 +33,7 @@ export const saveCalendarData = async (uid: string, events: EventData[]) => {
   await setDoc(userRef, { events: eventsWithIds }, { merge: true });
 };
 
-export const saveVacationData = async (
-  uid: string,
-  vacations: { id?: string; title: string; startDate: Date; endDate: Date }[]
-) => {
+export const saveVacationData = async (uid: string, vacations: VacayData[]) => {
   const userRef = doc(db, "calendars", uid);
   const vacationsWithIds = vacations.map((vacation) => {
     if (!vacation.id) {
@@ -37,29 +42,6 @@ export const saveVacationData = async (
     return vacation;
   });
   await setDoc(userRef, { vacations: vacationsWithIds }, { merge: true });
-};
-
-// Fetch calendar data for a user
-export const getCalendarData = async (uid: string) => {
-  const userRef = doc(db, "calendars", uid);
-  const userSnap = await getDoc(userRef);
-  if (userSnap.exists()) {
-    const data = userSnap.data();
-    if (data) {
-      const events =
-        data.events?.map((event: any) => ({
-          ...event,
-          date: event.date.toDate(), // Convert Firestore Timestamp to Date
-        })) || [];
-      const vacations =
-        data.vacations?.map((vacation: any) => ({
-          startDate: vacation.startDate.toDate(), // Convert Firestore Timestamp to Date
-          endDate: vacation.endDate.toDate(), // Convert Firestore Timestamp to Date
-        })) || [];
-      return { events, vacations };
-    }
-  }
-  return { events: [], vacations: [] };
 };
 
 export const deleteCalendarEvent = async (eventId: string) => {
@@ -117,14 +99,15 @@ export const editCalendarEvent = async (updatedEvent: EventData) => {
   }
 };
 
-// Fetch calendar data for a friend using friendId
-export const getFriendCalendar = async (friendId: string) => {
-  const calendarRef = doc(db, "calendars", friendId);
-  const calendarSnap = await getDoc(calendarRef);
-
-  if (calendarSnap.exists()) {
-    const data = calendarSnap.data();
-    if (data) {
+// Live-updates
+export const listenToCalendarData = (
+  uid: string,
+  callback: CalendarDataCallback
+) => {
+  const userRef = doc(db, "calendars", uid);
+  return onSnapshot(userRef, (doc) => {
+    if (doc.exists()) {
+      const data = doc.data();
       const events =
         data.events?.map((event: any) => ({
           ...event,
@@ -132,11 +115,13 @@ export const getFriendCalendar = async (friendId: string) => {
         })) || [];
       const vacations =
         data.vacations?.map((vacation: any) => ({
+          ...vacation,
           startDate: vacation.startDate.toDate(), // Convert Firestore Timestamp to Date
           endDate: vacation.endDate.toDate(), // Convert Firestore Timestamp to Date
         })) || [];
-      return { events, vacations };
+      callback({ events, vacations });
+    } else {
+      callback({ events: [], vacations: [] });
     }
-  }
-  return { events: [], vacations: [] };
+  });
 };
