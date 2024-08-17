@@ -11,6 +11,7 @@ interface Props {
   position: { top: number; right: number };
   eventData?: EventData | null;
   onEdit: (event: EventData) => void;
+  canEdit: boolean;
 }
 
 export interface EventData {
@@ -27,6 +28,7 @@ export default function ReadEventForm({
   onEdit,
   position,
   eventData,
+  canEdit,
 }: Props) {
   if (!eventData) return null;
 
@@ -49,8 +51,12 @@ export default function ReadEventForm({
 
   const headerContent = (
     <div className={styles.eventButtonContainer}>
-      <Edit className={styles.iconButton} onClick={handleEdit} />
-      <Trash2 onClick={onDeleteEvent} className={styles.iconButton} />
+      {canEdit ? (
+        <>
+          <Edit className={styles.iconButton} onClick={handleEdit} />
+          <Trash2 onClick={onDeleteEvent} className={styles.iconButton} />
+        </>
+      ) : null}
       <X onClick={onClose} className={styles.iconButton} />
     </div>
   );

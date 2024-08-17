@@ -366,6 +366,7 @@ export default function Calendar({ friendId }: Props) {
           position={addEventFormPosition}
           eventData={selectedEvent}
           onEdit={handleEdit}
+          canEdit={!friendId || selectedEvent?.id === uid}
         />
       )}
       {isVacayFormOpen && (
