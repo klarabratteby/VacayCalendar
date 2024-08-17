@@ -50,9 +50,6 @@ export default function Calendar({ friendId }: Props) {
     { title: string; startDate: Date; endDate: Date }[]
   >([]);
   const [uid, setUid] = useState<string>("");
-  const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(
-    null
-  ); // holds index of the currently selected event
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null); // holds the data of the selected event
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -81,10 +78,11 @@ export default function Calendar({ friendId }: Props) {
     fetchData();
   }, [friendId, uid]);
 
+  // Function that dtermoines if user has clicked on an empty date or an event
   const openForm = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     date: Date,
-    eventIndex: number | null = null,
+    eventId: string | null = null,
     formType: "add" | "read" = "add" // Default to 'add' if not provided
   ) => {
     const calendarContainer = document.querySelector(
@@ -100,25 +98,16 @@ export default function Calendar({ friendId }: Props) {
         right: rect.width - cellRect.right + rect.left, // Position to the left of the selected day, considering the width of the calendar
       };
       setSelectedDate(date);
-      setSelectedEventIndex(eventIndex);
-
-      // When an eventIndex is provided
-      if (eventIndex !== null) {
-        // Finds index based on date
-        const selectedEventIndex = events.findIndex((event) =>
-          isSameDay(event.date, date)
-        );
-
-        // If we find a date that is same as the selected date => update that index
-        if (selectedEventIndex !== -1) {
-          setSelectedEvent(events[selectedEventIndex]);
-          setSelectedEventIndex(selectedEventIndex);
-        } else {
-          // If we don't find a date that is same as the selected date => set to null
-          setSelectedEvent(null);
-          setSelectedEventIndex(null);
-        }
+      if (eventId) {
+        // Find the event in the events array that matches the provided eventId
+        const selectedEvent = events.find((event) => event.id === eventId);
+        // set selectedEvent state to the found event
+        setSelectedEvent(selectedEvent || null);
+      } else {
+        // empty cell date
+        setSelectedEvent(null);
       }
+
       setIsAddEventFormOpen(formType === "add");
       setIsOpenReadEventForm(formType === "read");
       setAddEventFormPosition(position);
@@ -129,7 +118,6 @@ export default function Calendar({ friendId }: Props) {
     setIsAddEventFormOpen(false);
     setIsOpenReadEventForm(false);
     setIsVacayFormOpen(false);
-    setSelectedEventIndex(null);
   };
 
   const handleEventData = async (event: EventData) => {
@@ -288,7 +276,7 @@ export default function Calendar({ friendId }: Props) {
           className={classNames}
           onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             setSelectedDate(cloneDate);
-            openForm(event, cloneDate, day, "add");
+            openForm(event, cloneDate, null, "add");
           }}
           key={day}
         >
@@ -299,7 +287,7 @@ export default function Calendar({ friendId }: Props) {
               className={styles.eventContainer}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent triggering the outer div's onClick
-                openForm(e, cloneDate, index, "read");
+                openForm(e, cloneDate, event.id, "read");
               }}
             >
               <div className={styles.eventContent}>
