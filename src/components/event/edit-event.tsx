@@ -4,6 +4,7 @@ import Button from "@/components/ui/button/button";
 import styles from "./event.module.css";
 import { X } from "react-feather";
 import { format } from "date-fns";
+import { auth } from "@/lib/firebaseConfig";
 
 interface Props {
   onClose: () => void;
@@ -18,6 +19,7 @@ export interface EventData {
   date: Date;
   description: string;
   time?: string;
+  createdBy: string;
 }
 
 export default function EditEventForm({
@@ -41,6 +43,7 @@ export default function EditEventForm({
       date: eventDate,
       description,
       time,
+      createdBy: auth.currentUser?.uid || "unknown",
     };
 
     onEdit(updatedEvent);

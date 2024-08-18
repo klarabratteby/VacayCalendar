@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./calendar.module.css";
 import {
   format,
@@ -24,11 +24,14 @@ import {
   editCalendarEvent,
   listenToCalendarData,
 } from "@/lib/firestore/calendar";
+
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../lib/firebaseConfig";
 import ReadEventForm from "../../event/read-event";
 import Button from "@/components/ui/button/button";
 import VacayForm from "@/components/event/add-vacay";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Props {
   friendId?: string;
@@ -50,6 +53,7 @@ export default function Calendar({ friendId }: Props) {
   >([]);
   const [uid, setUid] = useState<string>("");
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null); // holds the data of the selected event
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -61,11 +65,21 @@ export default function Calendar({ friendId }: Props) {
 
   useEffect(() => {
     const id = friendId || uid;
+
     if (id) {
       // Listen to real-time updates for the user's or friend's calendar
-      const unsubscribe = listenToCalendarData(id, (data) => {
+      const unsubscribe = listenToCalendarData(id, async (data) => {
         setEvents(data.events);
         setVacations(data.vacations);
+
+        // Notify the friend that changes have been made on their calendar (by another user)
+        data.events.forEach(async (event: any) => {
+          if (uid && event.createdBy != uid) {
+            if (!friendId) {
+              toast.info("Another user made changes on your calendar.");
+            }
+          }
+        });
       });
       return () => unsubscribe();
     }
@@ -114,13 +128,14 @@ export default function Calendar({ friendId }: Props) {
   };
 
   const handleEventData = async (event: EventData) => {
+    const createdBy = uid;
     const updatedEvents: EventData[] = [...events, event];
     // If event added on a friends calendar => save on both
     if (friendId && uid) {
-      await saveCalendarData(friendId, updatedEvents);
-      await saveCalendarData(uid, updatedEvents);
+      await saveCalendarData(friendId, updatedEvents, createdBy);
+      await saveCalendarData(uid, updatedEvents, createdBy);
     } else if (uid) {
-      await saveCalendarData(uid, updatedEvents);
+      await saveCalendarData(uid, updatedEvents, createdBy);
     }
   };
 
@@ -134,10 +149,13 @@ export default function Calendar({ friendId }: Props) {
   };
 
   const handleEdit = async (updatedEvent: EventData) => {
+    const createdBy = uid;
     const user = auth.currentUser;
     if (user && selectedEvent?.id) {
       // Update the event in Firestore
-      await editCalendarEvent(updatedEvent);
+
+      await editCalendarEvent(updatedEvent, createdBy);
+
       closeForm();
     }
   };

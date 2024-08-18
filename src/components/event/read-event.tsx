@@ -20,6 +20,7 @@ export interface EventData {
   date: Date;
   description: string;
   time?: string;
+  createdBy: string;
 }
 
 export default function ReadEventForm({

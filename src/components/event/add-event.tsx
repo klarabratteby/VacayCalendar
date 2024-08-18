@@ -3,6 +3,7 @@ import Form from "@/components/ui/form/form";
 import Button from "@/components/ui/button/button";
 import styles from "./event.module.css";
 import { X } from "react-feather";
+import { auth } from "@/lib/firebaseConfig";
 
 interface Props {
   onClose: () => void;
@@ -17,6 +18,7 @@ export interface EventData {
   date: Date;
   description: string;
   time?: string;
+  createdBy: string;
 }
 
 export default function AddEventForm({
@@ -38,6 +40,7 @@ export default function AddEventForm({
       date: eventDate,
       description,
       time,
+      createdBy: auth.currentUser?.uid || "unknown",
     };
 
     onEventAdded(event);

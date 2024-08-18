@@ -19,7 +19,11 @@ interface CalendarData {
 type CalendarDataCallback = (data: CalendarData) => void;
 
 // Save calendar data for a user
-export const saveCalendarData = async (uid: string, events: EventData[]) => {
+export const saveCalendarData = async (
+  uid: string,
+  events: EventData[],
+  createdBy: string
+) => {
   const userRef = doc(db, "calendars", uid);
   const eventsWithIds = await Promise.all(
     events.map(async (event) => {
@@ -27,6 +31,7 @@ export const saveCalendarData = async (uid: string, events: EventData[]) => {
         const eventDocRef = doc(collection(db, "calendars", uid, "events"));
         event.id = eventDocRef.id;
       }
+      event.createdBy = createdBy;
       return event;
     })
   );
@@ -70,11 +75,13 @@ export const deleteCalendarEvent = async (eventId: string) => {
   }
 };
 
-export const editCalendarEvent = async (updatedEvent: EventData) => {
+export const editCalendarEvent = async (
+  updatedEvent: EventData,
+  createdBy: string
+) => {
   if (!updatedEvent.id) {
     throw new Error("Event ID is required for editing");
   }
-
   // Fetch all calendars
   const calendarsCollectionRef = collection(db, "calendars");
   const calendarsSnap = await getDocs(calendarsCollectionRef);
@@ -92,7 +99,6 @@ export const editCalendarEvent = async (updatedEvent: EventData) => {
         const updatedEvents = data.events.map((event: EventData) =>
           event.id === updatedEvent.id ? updatedEvent : event
         );
-
         await updateDoc(userRef, { events: updatedEvents });
       }
     }
@@ -108,18 +114,21 @@ export const listenToCalendarData = (
   return onSnapshot(userRef, (doc) => {
     if (doc.exists()) {
       const data = doc.data();
-      const events =
-        data.events?.map((event: any) => ({
-          ...event,
-          date: event.date.toDate(), // Convert Firestore Timestamp to Date
-        })) || [];
-      const vacations =
-        data.vacations?.map((vacation: any) => ({
-          ...vacation,
-          startDate: vacation.startDate.toDate(), // Convert Firestore Timestamp to Date
-          endDate: vacation.endDate.toDate(), // Convert Firestore Timestamp to Date
-        })) || [];
-      callback({ events, vacations });
+      if (data) {
+        const events =
+          data.events?.map((event: any) => ({
+            ...event,
+            date: event.date.toDate(), // Convert Firestore Timestamp to Date
+          })) || [];
+        const vacations =
+          data.vacations?.map((vacation: any) => ({
+            ...vacation,
+            startDate: vacation.startDate.toDate(), // Convert Firestore Timestamp to Date
+            endDate: vacation.endDate.toDate(), // Convert Firestore Timestamp to Date
+          })) || [];
+
+        callback({ events, vacations });
+      }
     } else {
       callback({ events: [], vacations: [] });
     }
