@@ -258,9 +258,15 @@ export default function Calendar({ friendId }: Props) {
         }
       });
       // ensure that the submitted form-data gets added to the right day
-      const eventsForDay = events.filter((event) =>
-        isSameDay(event.date, cloneDate)
-      );
+      const eventsForDay = events
+        .filter((event) => isSameDay(event.date, cloneDate))
+
+        .sort((a, b) => {
+          if (!a.time && !b.time) return 0; // no events with time
+          if (!a.time) return -1; // place a before b
+          if (!b.time) return 1; // place a after b
+          return a.time.localeCompare(b.time); // compare time
+        });
       week.push(
         <div
           className={classNames}
@@ -275,6 +281,7 @@ export default function Calendar({ friendId }: Props) {
             <div
               key={index}
               className={styles.eventContainer}
+              style={{ top: `${index * 1}rem` }}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent triggering the outer div's onClick
                 openForm(e, cloneDate, event.id, "read");

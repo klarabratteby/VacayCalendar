@@ -71,6 +71,8 @@
   font-size: 0.7rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 0.2rem;
+  position: relative;
+  overflow-y: auto; /* scroll for dates that have many events */
 }
 .date .number {
   background: none;
@@ -112,12 +114,11 @@
 
 .eventContainer {
   background-color: #f75590;
-  height: 1.5vw;
+  height: fit-content;
   width: 10.6vw;
   display: flex;
-  flex-direction: row;
   position: absolute;
-  margin-top: 1.4rem;
+  margin-top: 1.7rem;
 }
 
 .eventContent {
