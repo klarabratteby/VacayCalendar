@@ -31,12 +31,15 @@ export default function AddFriendForm({ onAddFriend, onClose }: Props) {
           placeholder="Enter friend's email"
           className={styles.input}
         />
-        <Button
-          text="Submit"
-          backgroundColor="#031D44"
-          textColor="fff"
-          onClick={handleSubmit}
-        />
+        <div className={styles.submitButton}>
+          <Button
+            text="Submit"
+            backgroundColor="#031D44"
+            textColor="fff"
+            onClick={handleSubmit}
+            width="5rem"
+          />
+        </div>
       </Form>
     </div>
   );

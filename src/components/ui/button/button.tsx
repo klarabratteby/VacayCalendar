@@ -6,6 +6,7 @@ interface Props {
   backgroundColor: string;
   textColor: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  width?: string;
 }
 
 export default function Button(props: Props) {
@@ -14,6 +15,7 @@ export default function Button(props: Props) {
   const buttonStyle = {
     backgroundColor: hover ? "rgba(3, 29, 68, 0.6)" : props.backgroundColor,
     color: props.textColor,
+    width: props.width,
   };
 
   return (

@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import styles from "./auth.module.css";
 import Button from "@/components/ui/button/button";
 import Form from "@/components/ui/form/form";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "../../lib/firebaseConfig";
 import { saveUserData } from "@/lib/firestore/user";
+import styles from "./auth.module.css";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -43,7 +43,10 @@ export default function SignUpForm() {
 
   return (
     <Form>
-      <div>
+      <div className={styles.authHeadline}>
+        <h1>Signup to an Account</h1>
+      </div>
+      <div className={styles.formInput}>
         <label htmlFor="username">Name</label>
         <input
           type="text"
@@ -53,7 +56,7 @@ export default function SignUpForm() {
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-      <div>
+      <div className={styles.formInput}>
         <label htmlFor="email">Email</label>
         <input
           type="email"
@@ -63,7 +66,7 @@ export default function SignUpForm() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div>
+      <div className={styles.formInput}>
         <label htmlFor="password">Password</label>
         <input
           type="password"
@@ -73,7 +76,7 @@ export default function SignUpForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      {error && <p className={styles.error}>{error}</p>}
+      {error && <p>{error}</p>}
       <Button
         onClick={handleSignUp}
         text="Sign Up"

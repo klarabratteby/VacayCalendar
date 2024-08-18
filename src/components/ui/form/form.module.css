@@ -36,10 +36,9 @@
 .loginForm {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   width: 100%;
 }
 
 .loginForm div {
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }

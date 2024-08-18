@@ -107,10 +107,6 @@ export default function SideMenu({ onFriendSelect }: Props) {
           ))}
         </div>
       </div>
-      <div className={styles.userSettingsContainer}>
-        <Settings />
-        <h1 className={styles.addFriendText}>SETTINGS</h1>
-      </div>
     </div>
   );
 }

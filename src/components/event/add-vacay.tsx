@@ -159,12 +159,15 @@ export default function VacayForm({
             </div>
           </div>
         ))}
-        <Button
-          text="Submit"
-          backgroundColor="#031D44"
-          textColor="fff"
-          onClick={handleSubmit}
-        />
+        <div className={styles.submitButton}>
+          <Button
+            text="Submit"
+            backgroundColor="#031D44"
+            textColor="fff"
+            onClick={handleSubmit}
+            width="8rem"
+          />
+        </div>
       </Form>
     </div>
   );

@@ -67,10 +67,36 @@ export default function LoginForm() {
 
   return (
     <Form>
-      <Link href="/register">
-        <p>Register</p>
-      </Link>
-      <div>
+      <div className={styles.authHeadline}>
+        <h1>Login To Your Account</h1>
+      </div>
+      <div className={styles.registerContainer}>
+        <p>Don't have an account?</p>
+        <Link href="/register">
+          <p>Register</p>
+        </Link>
+      </div>
+      <div className={styles.divider}>
+        <span className={styles.line}></span>
+
+        <span className={styles.line}></span>
+      </div>
+      <div className={styles.signInButton}>
+        <Button
+          onClick={handleGoogleAuth}
+          text="Sign in with Google"
+          backgroundColor="#031D44"
+          textColor="fff"
+          width="13rem"
+        />
+      </div>
+
+      <div className={styles.divider}>
+        <span className={styles.line}></span>
+        <p className={styles.loginOptionText}>OR</p>
+        <span className={styles.line}></span>
+      </div>
+      <div className={styles.formInput}>
         <label htmlFor="email">Email</label>
         <input
           type="email"
@@ -80,7 +106,7 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div>
+      <div className={styles.formInput}>
         <label htmlFor="password">Password</label>
         <input
           type="password"
@@ -91,19 +117,15 @@ export default function LoginForm() {
         />
       </div>
       {error && <p className={styles.error}>{error}</p>}
-      <Button
-        onClick={handleSignIn}
-        text="Sign in"
-        backgroundColor="#031D44"
-        textColor="fff"
-      />
-      <p> or </p>
-      <Button
-        onClick={handleGoogleAuth}
-        text="Sign in with Google"
-        backgroundColor="#031D44"
-        textColor="fff"
-      />
+      <div className={styles.signInButton}>
+        <Button
+          onClick={handleSignIn}
+          text="Sign in"
+          backgroundColor="#031D44"
+          textColor="fff"
+          width="13rem"
+        />
+      </div>
     </Form>
   );
 }

@@ -1,0 +1,48 @@
+.registerContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+}
+
+.loginOptionText {
+  display: flex;
+  justify-content: center;
+  margin: 5% 10%;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+}
+
+.line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #e3e3e3;
+}
+
+.authHeadline {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+.formInput {
+  display: flex;
+  flex-direction: column;
+}
+.formInput label {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.formInput input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 2rem;
+}
+
+.signInButton {
+  display: flex;
+  justify-content: center;
+}

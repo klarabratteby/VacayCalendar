@@ -22,6 +22,8 @@
 
 .vacationForm {
   position: absolute;
+  max-height: 35rem;
+  overflow-y: auto; /* More than three vacations adds scroll in form*/
 }
 
 .vacationItem {
@@ -41,4 +43,48 @@
   color: #ff0000;
   height: 1.2rem;
   width: 1.2rem;
+}
+
+.submitButton {
+  display: flex;
+  justify-content: center;
+}
+
+.formInput {
+  display: flex;
+  flex-direction: column;
+}
+.formInput label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.formInput input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 1.2rem;
+  width: fit-content;
+}
+.formInput textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.formDate {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.formDate label {
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.formDate input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 1rem;
 }

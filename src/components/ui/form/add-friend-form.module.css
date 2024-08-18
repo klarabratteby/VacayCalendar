@@ -18,3 +18,8 @@
   max-width: 250px;
   margin: 0 auto;
 }
+
+.submitButton {
+  display: flex;
+  justify-content: center;
+}

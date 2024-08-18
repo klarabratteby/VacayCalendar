@@ -68,23 +68,25 @@ export default function ReadEventForm({
       style={{ top: position.top, right: position.right }}
     >
       <Form header={headerContent}>
-        <div>
-          <label htmlFor="title">Title</label>
-          <div>{title}</div>
-        </div>
-        <div>
-          <label htmlFor="date">Date</label>
-          <div>{format(date, "yyyy-MM-dd")}</div>
-        </div>
-        {time && ( // Conditionally render time if it exists
-          <div>
-            <label htmlFor="time">Time</label>
-            <div>{format(date, "HH:mm")}</div>
+        <div className={styles.formContent}>
+          <div className={styles.formInput}>
+            <label htmlFor="title">Title</label>
+            <div>{title}</div>
           </div>
-        )}
-        <div>
-          <label htmlFor="description">Description</label>
-          <div>{description}</div>
+          <div className={styles.formInput}>
+            <label htmlFor="date">Date</label>
+            <div>{format(date, "yyyy-MM-dd")}</div>
+          </div>
+          {time && ( // Conditionally render time if it exists
+            <div className={styles.formInput}>
+              <label htmlFor="time">Time</label>
+              <div>{format(date, "HH:mm")}</div>
+            </div>
+          )}
+          <div className={styles.formInput}>
+            <label htmlFor="description">Description</label>
+            <div>{description}</div>
+          </div>
         </div>
       </Form>
     </div>
