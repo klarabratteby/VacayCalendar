@@ -77,12 +77,15 @@ export default function SignUpForm() {
         />
       </div>
       {error && <p>{error}</p>}
-      <Button
-        onClick={handleSignUp}
-        text="Sign Up"
-        backgroundColor="#031D44"
-        textColor="fff"
-      />
+      <div className={styles.signInButton}>
+        <Button
+          onClick={handleSignUp}
+          text="Sign Up"
+          backgroundColor="#031D44"
+          textColor="fff"
+          width="13rem"
+        />
+      </div>
     </Form>
   );
 }

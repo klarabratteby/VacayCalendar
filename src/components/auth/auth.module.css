@@ -25,6 +25,7 @@
   display: flex;
   justify-content: center;
   font-weight: bold;
+  margin-top: 2rem;
 }
 .formInput {
   display: flex;
@@ -46,3 +47,7 @@
   display: flex;
   justify-content: center;
 }
+
+/* .authContainer {
+  padding: 2rem;
+} */

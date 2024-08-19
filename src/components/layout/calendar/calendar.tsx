@@ -207,6 +207,7 @@ export default function Calendar({ friendId }: Props) {
                 backgroundColor="#DCF9E6"
                 textColor="#0F574E"
                 onClick={handleAddVacay}
+                width="7rem"
               />
             )}
           </div>
@@ -281,13 +282,15 @@ export default function Calendar({ friendId }: Props) {
             <div
               key={index}
               className={styles.eventContainer}
-              style={{ top: `${index * 1}rem` }}
+              style={{ top: `${index * 1.2}rem` }}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent triggering the outer div's onClick
                 openForm(e, cloneDate, event.id, "read");
               }}
             >
-              <div className={styles.eventContent}>
+              <div
+                className={`${styles.eventContent} ${event.time && event.title ? styles.gap : ""}`}
+              >
                 <div>{event.time}</div>
                 <div>{event.title}</div>
               </div>

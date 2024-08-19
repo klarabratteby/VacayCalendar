@@ -119,20 +119,22 @@
   width: 10.6vw;
   display: flex;
   position: absolute;
+  justify-content: center;
   margin-top: 1.7rem;
+  white-space: nowrap;
 }
 
 .eventContent {
   font-size: 11px;
   font-weight: bold;
   color: white;
-  padding-left: 0.5rem;
+
   display: flex;
   align-items: center;
+  justify-content: center;
 }
-
-.eventContent > div {
-  margin-right: 0.2rem;
+.eventContent.gap {
+  gap: 0.2rem;
 }
 
 .vacationDay {

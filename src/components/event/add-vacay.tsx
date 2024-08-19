@@ -124,7 +124,7 @@ export default function VacayForm({
               className={styles.trashIcon}
               onClick={() => handleRemoveVacationForm(index)}
             />
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor={`title-${index}`}>Title</label>
               <input
                 type="text"
@@ -135,7 +135,7 @@ export default function VacayForm({
                 }
               />
             </div>
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor={`startDate-${index}`}>Start Date</label>
               <input
                 type="date"
@@ -146,7 +146,7 @@ export default function VacayForm({
                 }
               />
             </div>
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor={`endDate-${index}`}>End Date</label>
               <input
                 type="date"
@@ -159,6 +159,7 @@ export default function VacayForm({
             </div>
           </div>
         ))}
+
         <div className={styles.submitButton}>
           <Button
             text="Submit"
