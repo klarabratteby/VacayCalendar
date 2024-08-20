@@ -8,7 +8,11 @@ import { addFriendByEmail, getFriends } from "@/lib/firestore/friend";
 import { auth } from "@/lib/firebaseConfig";
 import FriendButton from "@/components/ui/button/friendbutton";
 import { removeFriend } from "@/lib/firestore/friend";
-import { getUserData } from "@/lib/firestore/user";
+import { getUserData, saveUserData } from "@/lib/firestore/user";
+import { uploadProfilePicture } from "@/lib/firebaseStorage";
+import { IoAddCircle } from "react-icons/io5";
+import { IoPersonAdd } from "react-icons/io5";
+
 interface Props {
   onFriendSelect: (friendId: string) => void;
 }
@@ -23,6 +27,7 @@ export default function SideMenu({ onFriendSelect }: Props) {
   const [username, setUsername] = useState<string>("");
   const [profilePicture, setProfilePicture] =
     useState<string>("/user-admin.svg");
+  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -32,6 +37,7 @@ export default function SideMenu({ onFriendSelect }: Props) {
         if (userData) {
           setUsername(userData.username || "");
           setProfilePicture(userData.profilePicture || "/user-admin.svg");
+          setEmail(userData.email);
         }
       }
     });
@@ -48,6 +54,29 @@ export default function SideMenu({ onFriendSelect }: Props) {
 
     fetchFriends();
   }, [uid]);
+
+  const handleUploadProfilePicture = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.files && event.target.files[0] && uid) {
+      const file = event.target.files[0];
+
+      try {
+        // Upload the new profile picture
+        const downloadURL = await uploadProfilePicture(file, uid);
+
+        // Update the user's profile picture in Firestore
+        await saveUserData(uid, {
+          email,
+          username,
+          profilePicture: downloadURL,
+        });
+        setProfilePicture(downloadURL);
+      } catch (error) {
+        console.error("Error uploading profile picture:", error);
+      }
+    }
+  };
 
   const handleAddFriend = async (email: string) => {
     setShowForm(false);
@@ -87,7 +116,24 @@ export default function SideMenu({ onFriendSelect }: Props) {
             src={profilePicture}
             alt="Profile"
             className={styles.profilePicture}
-            layout="fill"
+            fill={true}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={true}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleUploadProfilePicture}
+            className={styles.uploadInput}
+          />
+          <IoAddCircle
+            className={styles.addProfilePictureButton}
+            onClick={() => {
+              const fileInput = document.querySelector(
+                `.${styles.uploadInput}`
+              ) as HTMLInputElement;
+              fileInput?.click();
+            }}
           />
         </div>
         <h5 className={styles.username}>{username}</h5>
@@ -95,7 +141,7 @@ export default function SideMenu({ onFriendSelect }: Props) {
       <div className={styles.friendListContainer}>
         <div className={styles.addFriendButtonContainer}>
           <h2 className={styles.addFriendText}>Friends</h2>
-          <PlusCircle
+          <IoPersonAdd
             className={styles.addFriendButton}
             onClick={displayForm}
           />
