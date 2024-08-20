@@ -43,48 +43,56 @@ export default function SignUpForm() {
 
   return (
     <Form>
-      <div className={styles.authHeadline}>
-        <h1>Signup to an Account</h1>
-      </div>
-      <div className={styles.formInput}>
-        <label htmlFor="username">Name</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div className={styles.formInput}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className={styles.formInput}>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      {error && <p>{error}</p>}
-      <div className={styles.signInButton}>
-        <Button
-          onClick={handleSignUp}
-          text="Sign Up"
-          backgroundColor="#031D44"
-          textColor="fff"
-          width="13rem"
-        />
+      <div className={styles.dividerContainer}>
+        <div className={styles.authHeadline}>
+          <h1>Signup to an Account</h1>
+        </div>
+
+        <div className={styles.formInputContainer}>
+          <div className={styles.formInput}>
+            <label htmlFor="username">Name</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              placeholder="Name"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className={styles.formInput}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className={styles.formInput}>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+        </div>
+        {error && <p>{error}</p>}
+        <div className={styles.signInButton}>
+          <Button
+            onClick={handleSignUp}
+            text="Sign Up"
+            backgroundColor="#0C463F"
+            textColor="fff"
+            width="13rem"
+          />
+        </div>
       </div>
     </Form>
   );

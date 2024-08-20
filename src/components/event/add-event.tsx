@@ -122,7 +122,7 @@ export default function AddEventForm({
           <div className={styles.submitButton}>
             <Button
               text="Add Event"
-              backgroundColor="#031D44"
+              backgroundColor="#0C463F"
               textColor="fff"
               onClick={handleSubmit}
               width="8rem"

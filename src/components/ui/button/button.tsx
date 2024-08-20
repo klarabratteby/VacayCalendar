@@ -13,7 +13,7 @@ export default function Button(props: Props) {
   const [hover, setHover] = useState(false);
 
   const buttonStyle = {
-    backgroundColor: hover ? "rgba(3, 29, 68, 0.6)" : props.backgroundColor,
+    backgroundColor: hover ? "rgba(12, 70, 63, 0.6)" : props.backgroundColor,
     color: props.textColor,
     width: props.width,
   };

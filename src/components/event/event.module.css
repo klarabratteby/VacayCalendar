@@ -50,6 +50,13 @@
 .submitButton {
   display: flex;
   justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.formContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .formInput {
@@ -80,7 +87,10 @@
 
 .formInput div {
   font-size: 12px;
-  font-style: italic;
+}
+
+.createSpaceContainer {
+  margin-bottom: 1rem;
 }
 
 .formDate {

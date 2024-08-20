@@ -193,9 +193,9 @@ export default function Calendar({ friendId }: Props) {
             <AiOutlineLeft
               onClick={() => setActiveDate(subMonths(activeDate, 1))}
             />
-            <h2 className={styles.currentMonth}>
+            <h4 className={styles.currentMonth}>
               {format(activeDate, "MMMM yyyy")}
-            </h2>
+            </h4>
             <AiOutlineRight
               onClick={() => setActiveDate(addMonths(activeDate, 1))}
             />
@@ -204,8 +204,8 @@ export default function Calendar({ friendId }: Props) {
             {!friendId && (
               <Button
                 text={vacations.length > 0 ? "Edit Vacay" : "Add Vacay"}
-                backgroundColor="#DCF9E6"
-                textColor="#0F574E"
+                backgroundColor="#0C463F"
+                textColor="#fff"
                 onClick={handleAddVacay}
                 width="7rem"
               />
@@ -291,8 +291,8 @@ export default function Calendar({ friendId }: Props) {
               <div
                 className={`${styles.eventContent} ${event.time && event.title ? styles.gap : ""}`}
               >
-                <div>{event.time}</div>
-                <div>{event.title}</div>
+                <h3>{event.time}</h3>
+                <h3>{event.title}</h3>
               </div>
             </div>
           ))}

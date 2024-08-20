@@ -83,9 +83,11 @@ export default function ReadEventForm({
               <div>{format(date, "HH:mm")}</div>
             </div>
           )}
-          <div className={styles.formInput}>
-            <label htmlFor="description">Description</label>
-            <div>{description}</div>
+          <div className={styles.createSpaceContainer}>
+            <div className={styles.formInput}>
+              <label htmlFor="description">Description</label>
+              <div>{description}</div>
+            </div>
           </div>
         </div>
       </Form>

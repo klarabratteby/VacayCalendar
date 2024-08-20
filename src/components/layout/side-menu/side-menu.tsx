@@ -83,12 +83,15 @@ export default function SideMenu({ onFriendSelect }: Props) {
           alt="Profile"
           className={styles.profilePicture}
         />
-        <h1 className={styles.username}>{username}</h1>
+        <h5 className={styles.username}>{username}</h5>
       </div>
       <div className={styles.friendListContainer}>
         <div className={styles.addFriendButtonContainer}>
-          <h1 className={styles.addFriendText}>FRIENDS</h1>
-          <PlusCircle className="addFriendButton" onClick={displayForm} />
+          <h2 className={styles.addFriendText}>Friends</h2>
+          <PlusCircle
+            className={styles.addFriendButton}
+            onClick={displayForm}
+          />
         </div>
         {showForm && (
           <AddFriendForm

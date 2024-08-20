@@ -34,7 +34,7 @@ export default function AddFriendForm({ onAddFriend, onClose }: Props) {
         <div className={styles.submitButton}>
           <Button
             text="Submit"
-            backgroundColor="#031D44"
+            backgroundColor="#0C463F"
             textColor="fff"
             onClick={handleSubmit}
             width="5rem"

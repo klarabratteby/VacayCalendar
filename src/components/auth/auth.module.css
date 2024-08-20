@@ -2,17 +2,26 @@
   display: flex;
   flex-direction: row;
   gap: 0.4rem;
+  margin-top: 0.4rem;
 }
 
 .loginOptionText {
   display: flex;
   justify-content: center;
-  margin: 5% 10%;
+  margin: 0 10%;
+}
+
+.dividerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
 }
 
 .divider {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .line {
@@ -24,16 +33,21 @@
 .authHeadline {
   display: flex;
   justify-content: center;
-  font-weight: bold;
   margin-top: 2rem;
+  font-size: 1.4rem;
 }
-.formInput {
+.formInputContainer {
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
 }
+
 .formInput label {
   display: block;
   margin-bottom: 0.2rem;
+  font-size: 1rem;
 }
 
 .formInput input {
@@ -41,13 +55,11 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   height: 2rem;
+  padding-left: 0.5rem;
 }
 
 .signInButton {
   display: flex;
   justify-content: center;
+  margin-bottom: 2rem;
 }
-
-/* .authContainer {
-  padding: 2rem;
-} */

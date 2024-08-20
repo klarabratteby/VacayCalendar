@@ -28,3 +28,8 @@
 .activeTab {
   border-bottom: 2px solid black;
 }
+
+.noSelectedFriendMessage {
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}

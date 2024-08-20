@@ -6,7 +6,7 @@
 .friendButton {
   display: flex;
   align-items: center;
-  background-color: #031d44;
+  background-color: #0c463f;
   justify-content: space-between;
   color: #fff;
   border: none;
@@ -20,7 +20,7 @@
   white-space: nowrap;
 }
 .friendButton:hover {
-  background-color: rgba(3, 29, 68, 0.6);
+  background-color: rgba(12, 70, 63, 0.6);
 }
 .trashIcon {
   height: 1rem;
@@ -32,6 +32,10 @@
   .trashIcon {
     display: none;
   }
+}
+
+.trashIcon {
+  cursor: pointer;
 }
 
 .trashIcon:hover {

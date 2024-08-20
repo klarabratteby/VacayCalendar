@@ -70,61 +70,68 @@ export default function LoginForm() {
       <div className={styles.authHeadline}>
         <h1>Login To Your Account</h1>
       </div>
-      <div className={styles.registerContainer}>
-        <p>Don't have an account?</p>
-        <Link href="/register">
-          <p>Register</p>
-        </Link>
-      </div>
-      <div className={styles.divider}>
-        <span className={styles.line}></span>
+      <div className={styles.dividerContainer}>
+        <div className={styles.registerContainer}>
+          <p>Don't have an account?</p>
+          <Link href="/register">
+            <p>Register</p>
+          </Link>
+        </div>
 
-        <span className={styles.line}></span>
-      </div>
-      <div className={styles.signInButton}>
+        <div className={styles.divider}>
+          <span className={styles.line}></span>
+
+          <span className={styles.line}></span>
+        </div>
+
         <Button
           onClick={handleGoogleAuth}
           text="Sign in with Google"
-          backgroundColor="#031D44"
+          backgroundColor="#0C463F"
           textColor="fff"
           width="13rem"
         />
-      </div>
 
-      <div className={styles.divider}>
-        <span className={styles.line}></span>
-        <p className={styles.loginOptionText}>OR</p>
-        <span className={styles.line}></span>
-      </div>
-      <div className={styles.formInput}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className={styles.formInput}>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      {error && <p className={styles.error}>{error}</p>}
-      <div className={styles.signInButton}>
-        <Button
-          onClick={handleSignIn}
-          text="Sign in"
-          backgroundColor="#031D44"
-          textColor="fff"
-          width="13rem"
-        />
+        <div className={styles.divider}>
+          <span className={styles.line}></span>
+          <p className={styles.loginOptionText}>OR</p>
+          <span className={styles.line}></span>
+        </div>
+
+        <div className={styles.formInputContainer}>
+          <div className={styles.formInput}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className={styles.formInput}>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+        </div>
+        {error && <p className={styles.error}>{error}</p>}
+        <div className={styles.signInButton}>
+          <Button
+            onClick={handleSignIn}
+            text="Sign in"
+            backgroundColor="#0C463F"
+            textColor="fff"
+            width="13rem"
+          />
+        </div>
       </div>
     </Form>
   );
