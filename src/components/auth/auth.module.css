@@ -5,6 +5,10 @@
   margin-top: 0.4rem;
 }
 
+.link {
+  color: #f75590;
+}
+
 .loginOptionText {
   display: flex;
   justify-content: center;

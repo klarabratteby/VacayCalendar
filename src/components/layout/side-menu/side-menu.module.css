@@ -1,7 +1,7 @@
 .menuContainer {
   flex: 0 0 20%;
   box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
-  height: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -112,6 +112,14 @@
   height: 1.4rem;
   background-color: white;
   border-radius: 15rem;
+}
+
+@media (max-width: 800px) {
+  .addProfilePictureButton {
+    width: 0.9rem;
+    height: 0.9rem;
+    right: 0;
+  }
 }
 
 .addProfilePictureButton:hover {

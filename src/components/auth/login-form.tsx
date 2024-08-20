@@ -74,7 +74,7 @@ export default function LoginForm() {
         <div className={styles.registerContainer}>
           <p>Don&apos;t have an account?</p>
           <Link href="/register">
-            <p>Register</p>
+            <p className={styles.link}>Register</p>
           </Link>
         </div>
 
