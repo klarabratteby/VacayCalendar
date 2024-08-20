@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./calendar-dashboard.module.css";
 import Calendar from "@/components/layout/calendar/calendar";
-
+import "../../../../src/app/globals.css";
 interface Props {
   friendId: string | null;
 }

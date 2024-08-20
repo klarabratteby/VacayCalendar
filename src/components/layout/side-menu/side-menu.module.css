@@ -5,24 +5,48 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
+  background-color: #f0fbf4;
+}
+
+.headline {
+  font-size: 1.8rem;
+  color: #f75590;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 840px) {
+  .headline {
+    font-size: 1rem;
+  }
 }
 
 .profilePictureContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10%;
-  margin-top: 20%;
+}
+
+.profilePictureWrapper {
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 800px) {
+  .profilePictureWrapper {
+    width: 4rem;
+    height: 4rem;
+  }
 }
 
 .profilePicture {
-  width: 8rem;
-  height: 8rem;
+  object-fit: cover;
   border-radius: 50%;
   border: 0.3rem solid black;
   object-fit: cover;
-  margin-bottom: 0.5rem;
+  background-color: white;
 }
 
 .username {
@@ -45,9 +69,10 @@
 .addFriendButton {
   font-weight: bold;
   cursor: pointer;
-  border: none;
+  border-radius: 15rem;
   width: 1.3rem;
   height: 1.3rem;
+  background-color: white;
 }
 
 .addFriendButton:hover {

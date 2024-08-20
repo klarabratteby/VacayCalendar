@@ -79,11 +79,17 @@ export default function SideMenu({ onFriendSelect }: Props) {
   return (
     <div className={styles.menuContainer}>
       <div className={styles.profilePictureContainer}>
-        <Image
-          src={profilePicture}
-          alt="Profile"
-          className={styles.profilePicture}
-        />
+        <div className={`${styles.headline} playwrite-co`}>
+          Let&apos;s Plan!
+        </div>
+        <div className={styles.profilePictureWrapper}>
+          <Image
+            src={profilePicture}
+            alt="Profile"
+            className={styles.profilePicture}
+            layout="fill"
+          />
+        </div>
         <h5 className={styles.username}>{username}</h5>
       </div>
       <div className={styles.friendListContainer}>

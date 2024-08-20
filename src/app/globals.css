@@ -162,3 +162,15 @@ button {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
 }
+
+@font-face {
+  font-family: "Playwrite CO";
+  src: url("/fonts/PlaywriteCO-VariableFont_wght.ttf") format("truetype");
+  font-weight: thin;
+  font-style: thin;
+  font-display: swap;
+}
+
+.playwrite-co {
+  font-family: "Playwrite CO", cursive;
+}

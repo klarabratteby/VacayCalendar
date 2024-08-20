@@ -23,7 +23,7 @@ export default function Home() {
         await clearSentence(typewriter, 50);
 
         // Second sentence
-        await typeSentence(typewriter, "Let's Plan!", 80);
+        await typeSentence(typewriter, "Let's Plan! ", 80);
 
         isTyping.current = false; // Reset typing state
       }

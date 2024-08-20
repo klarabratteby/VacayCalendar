@@ -11,13 +11,13 @@
 .typewriter {
   color: #f75590;
   margin-top: 10%;
-  font-size: 4rem;
-  overflow: hidden;
+
   border-right: 0.15em solid #0f574e;
-  white-space: nowrap;
-  letter-spacing: 0.15em;
+  font-size: 4.2vw;
   padding-bottom: 0.1em; /* To fit the text */
+  padding-right: 0.2em;
   animation: blink-caret 0.75s step-end infinite;
+  font-family: "Playwrite CO", cursive;
 }
 
 @keyframes blink-caret {
