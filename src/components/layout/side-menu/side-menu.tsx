@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import styles from "./side-menu.module.css";
-import { PlusCircle, Settings } from "react-feather";
+import { PlusCircle } from "react-feather";
 import AddFriendForm from "@/components/ui/form/add-friend-form";
 import { addFriendByEmail, getFriends } from "@/lib/firestore/friend";
 import { auth } from "@/lib/firebaseConfig";
@@ -78,7 +79,7 @@ export default function SideMenu({ onFriendSelect }: Props) {
   return (
     <div className={styles.menuContainer}>
       <div className={styles.profilePictureContainer}>
-        <img
+        <Image
           src={profilePicture}
           alt="Profile"
           className={styles.profilePicture}

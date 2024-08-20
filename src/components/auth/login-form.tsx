@@ -72,7 +72,7 @@ export default function LoginForm() {
       </div>
       <div className={styles.dividerContainer}>
         <div className={styles.registerContainer}>
-          <p>Don't have an account?</p>
+          <p>Don&apos;t have an account?</p>
           <Link href="/register">
             <p>Register</p>
           </Link>

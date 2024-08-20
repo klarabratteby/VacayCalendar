@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState } from "react";
 import Form from "@/components/ui/form/form";
 import styles from "./event.module.css";
 import { Trash2, X, Edit } from "react-feather";
@@ -31,11 +31,10 @@ export default function ReadEventForm({
   eventData,
   canEdit,
 }: Props) {
+  const [editMode, setEditMode] = useState(false);
   if (!eventData) return null;
 
   const { title, date, description, time } = eventData;
-  const [editMode, setEditMode] = useState(false);
-
   const handleEdit = () => setEditMode(true);
   const handleExitEdit = () => setEditMode(false);
 
