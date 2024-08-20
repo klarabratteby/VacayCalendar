@@ -18,6 +18,11 @@
   width: 1.2rem;
   margin-right: 0.7rem;
   color: rgb(159, 157, 157);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  color: rgb(159, 157, 157, 0.7);
 }
 
 .vacationForm {
@@ -31,8 +36,8 @@
   display: flex;
   align-items: center;
   padding: 2rem;
-  border: 0.01rem solid #ddd;
-  border-radius: 0.5rem;
+  border-top: 0.01rem solid #ddd;
+  border-bottom: 0.01rem solid #ddd;
   position: relative;
   gap: 0.5rem;
 }
@@ -42,9 +47,15 @@
   top: 0.5rem;
   right: 0.5rem;
   cursor: pointer;
-  color: #ff0000;
+  color: #ff3333;
   height: 1.2rem;
   width: 1.2rem;
+  cursor: pointer;
+}
+
+.trashIcon:hover {
+  color: rgba(255, 51, 51, 0.8);
+  transform: scale(1.01);
 }
 
 .submitButton {

@@ -23,10 +23,14 @@
   border: none;
   background-color: white;
   border-bottom: 2px solid white;
+  cursor: pointer;
 }
-
+.tab:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
 .activeTab {
   border-bottom: 2px solid black;
+  font-weight: bold;
 }
 
 .noSelectedFriendMessage {

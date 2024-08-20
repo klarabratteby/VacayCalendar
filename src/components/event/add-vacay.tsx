@@ -118,56 +118,58 @@ export default function VacayForm({
       style={{ top: position.top, right: position.right }}
     >
       <Form header={headerContent}>
-        {vacationForms.map((form, index) => (
-          <div key={index} className={styles.vacationItem}>
-            <Trash2
-              className={styles.trashIcon}
-              onClick={() => handleRemoveVacationForm(index)}
-            />
-            <div className={styles.formInput}>
-              <label htmlFor={`title-${index}`}>Title</label>
-              <input
-                type="text"
-                id={`title-${index}`}
-                value={form.title}
-                onChange={(e) =>
-                  handleVacationChange(index, "title", e.target.value)
-                }
+        <div className={styles.formContent}>
+          {vacationForms.map((form, index) => (
+            <div key={index} className={styles.vacationItem}>
+              <Trash2
+                className={styles.trashIcon}
+                onClick={() => handleRemoveVacationForm(index)}
               />
+              <div className={styles.formInput}>
+                <label htmlFor={`title-${index}`}>Title</label>
+                <input
+                  type="text"
+                  id={`title-${index}`}
+                  value={form.title}
+                  onChange={(e) =>
+                    handleVacationChange(index, "title", e.target.value)
+                  }
+                />
+              </div>
+              <div className={styles.formInput}>
+                <label htmlFor={`startDate-${index}`}>Start Date</label>
+                <input
+                  type="date"
+                  id={`startDate-${index}`}
+                  value={form.startDate}
+                  onChange={(e) =>
+                    handleVacationChange(index, "startDate", e.target.value)
+                  }
+                />
+              </div>
+              <div className={styles.formInput}>
+                <label htmlFor={`endDate-${index}`}>End Date</label>
+                <input
+                  type="date"
+                  id={`endDate-${index}`}
+                  value={form.endDate}
+                  onChange={(e) =>
+                    handleVacationChange(index, "endDate", e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className={styles.formInput}>
-              <label htmlFor={`startDate-${index}`}>Start Date</label>
-              <input
-                type="date"
-                id={`startDate-${index}`}
-                value={form.startDate}
-                onChange={(e) =>
-                  handleVacationChange(index, "startDate", e.target.value)
-                }
-              />
-            </div>
-            <div className={styles.formInput}>
-              <label htmlFor={`endDate-${index}`}>End Date</label>
-              <input
-                type="date"
-                id={`endDate-${index}`}
-                value={form.endDate}
-                onChange={(e) =>
-                  handleVacationChange(index, "endDate", e.target.value)
-                }
-              />
-            </div>
-          </div>
-        ))}
+          ))}
 
-        <div className={styles.submitButton}>
-          <Button
-            text="Submit"
-            backgroundColor="#031D44"
-            textColor="fff"
-            onClick={handleSubmit}
-            width="8rem"
-          />
+          <div className={styles.submitButton}>
+            <Button
+              text="Submit"
+              backgroundColor="#0C463F"
+              textColor="fff"
+              onClick={handleSubmit}
+              width="8rem"
+            />
+          </div>
         </div>
       </Form>
     </div>

@@ -18,6 +18,7 @@
     transform 0.3s,
     background-color 0.3s;
   white-space: nowrap;
+  cursor: pointer;
 }
 .friendButton:hover {
   background-color: rgba(12, 70, 63, 0.6);
