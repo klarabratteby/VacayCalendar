@@ -40,7 +40,14 @@ export default function VacayForm({
     // Ensures that exsisting vacation dates are displayed in the right timezone
     const formatDate = (date: Date) => date.toLocaleDateString("sv-SE");
     if (vacations.length > 0) {
-      const formattedVacations = vacations.map(
+      // Sort vacations based on timestamp
+      const sortedVacations = vacations
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+        );
+      const formattedVacations = sortedVacations.map(
         ({ title, startDate, endDate }) => ({
           title: title ?? "",
           startDate: formatDate(new Date(startDate)),
