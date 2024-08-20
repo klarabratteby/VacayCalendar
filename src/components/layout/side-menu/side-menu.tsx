@@ -136,7 +136,7 @@ export default function SideMenu({ onFriendSelect }: Props) {
             }}
           />
         </div>
-        <h5 className={styles.username}>{username}</h5>
+        <h1 className={styles.username}>{username}</h1>
       </div>
       <div className={styles.friendListContainer}>
         <div className={styles.addFriendButtonContainer}>
