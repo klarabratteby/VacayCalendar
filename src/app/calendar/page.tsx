@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./calendar.module.css";
 import CalendarDashboard from "@/components/layout/calendar-dashboard/calendar-dashboard";
 import SideMenu from "@/components/layout/side-menu/side-menu";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 export default function Calendar() {
   const [selectedFriend, setSelectedFriend] = useState<string | null>(null);
 

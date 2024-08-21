@@ -30,7 +30,7 @@ import { auth } from "../../../lib/firebaseConfig";
 import ReadEventForm from "../../event/read-event";
 import Button from "@/components/ui/button/button";
 import VacayForm from "@/components/event/add-vacay";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Props {
