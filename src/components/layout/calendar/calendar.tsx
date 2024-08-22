@@ -85,7 +85,7 @@ export default function Calendar({ friendId }: Props) {
     }
   }, [friendId, uid]);
 
-  // Function that dtermoines if user has clicked on an empty date or an event
+  // Function that determines if user has clicked on an empty date or an event
   const openForm = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     date: Date,

@@ -1,10 +1,5 @@
 import { storage } from "./firebaseConfig";
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Upload of a profile picture
 export const uploadProfilePicture = async (
