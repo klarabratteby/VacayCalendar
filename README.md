@@ -14,7 +14,7 @@ The application is based on:
 
 - Language: TypeScript
 - Frontend framework: Next.js with React
-- Backend/Database/Authentification: Firebase
+- Backend/Database/Authentication: Firebase
 
 ## Functionalities
 
