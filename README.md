@@ -27,9 +27,3 @@ The application is based on:
 
 **Deployed at:**
 [https://vacay-calendar.vercel.app/](https://vacay-calendar.vercel.app/)
-
-**Project Screencast:**
-[https://drive.google.com/file/d/1vXnjb4ne6Yqtqj5EHgRi1cGBTNxIXgRe/view?usp=sharing](https://drive.google.com/file/d/1vXnjb4ne6Yqtqj5EHgRi1cGBTNxIXgRe/view?usp=sharing)
-
-**Individual oral code screen-cast:**
-[https://drive.google.com/file/d/1BgNyNv0m92WLZMKc72ZG1BOz_9PzHfFF/view?usp=sharing](https://drive.google.com/file/d/1BgNyNv0m92WLZMKc72ZG1BOz_9PzHfFF/view?usp=sharing)
